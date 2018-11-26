@@ -15,8 +15,8 @@
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"/>
       </el-select>
-      <el-input placeholder="광고주 ID" v-model="listQuery.sponser_id" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input placeholder="광고주 이메일" v-model="listQuery.email" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.sponser_id" placeholder="광고주 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.email" placeholder="광고주 이메일" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
@@ -78,29 +78,43 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:100px;">
+        <el-form-item label="광고주 이메일" prop="email">
+          <el-input v-model="temp.email"/>
+        </el-form-item>
+        <el-form-item label="카테고리">
+          <el-select v-model="temp.target_category" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item"/>
+        <el-form-item label="카테고리2">
+          <el-select v-model="temp.target_category2" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;"/>
+        <el-form-item label="나이대" placeholder="10세 ~ 60세 이상" >
+          <el-input v-model="temp.target_age"/>
         </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="Please input"/>
+        <el-form-item label="성별">
+          <el-select v-model="temp.target_sex" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in targetSexList" :key="item.key" :label="item.label" :value="item.key"/>
+          </el-select>
         </el-form-item>
+        <el-form-item label="상태">
+          <el-select v-model="temp.status_text" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in statusList" :key="item.key" :label="item.label" :value="item.key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="필요팔로워수">
+          <el-input v-model="temp.required_influencer_follower"/>
+        </el-form-item>
+        <el-form-item label="기간">
+          <el-input v-model="temp.period"/>
+        </el-form-item>
+        <el-form-item label="예산">
+          <el-input v-model="temp.budget"/>
+        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -171,11 +185,15 @@ export default {
         picture_link: undefined,
         status_text: undefined,
         target_category: undefined,
+        target_category2: undefined,
         target_age: undefined,
         target_sex: undefined,
         importance: undefined,
         title: undefined,
         type: undefined,
+        required_influencer_follower: undefined,
+        period: undefined,
+        budget: undefined,
         sort: '+id'
       },
       statusList:  [
