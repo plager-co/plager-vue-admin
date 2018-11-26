@@ -6,8 +6,9 @@
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">New Visits</div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num"/>
+          <div class="card-panel-text">현재 진행 SIM 서비스</div>
+          전일: <count-to :start-val="0" :end-val="3" :duration="2600" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="5" :duration="2600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -17,8 +18,9 @@
           <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Messages</div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num"/>
+          <div class="card-panel-text">신규 SIM 서비스 신청</div>
+          전일: <count-to :start-val="0" :end-val="2" :duration="3000" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="2" :duration="3000" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -28,8 +30,9 @@
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Purchases</div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num"/>
+          <div class="card-panel-text">신규 등록 광고주</div>
+          전일: <count-to :start-val="0" :end-val="122" :duration="3200" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="23" :duration="3200" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -39,8 +42,21 @@
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Shoppings</div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num"/>
+          <div class="card-panel-text">신규 등록 인플루언서</div>
+          전일: <count-to :start-val="0" :end-val="23" :duration="3600" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="25" :duration="3600" class="card-panel-num"/>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-shopping">
+          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">나의 영향력 테스트 수</div>
+          전일: <count-to :start-val="0" :end-val="35" :duration="3600" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="120" :duration="3600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
