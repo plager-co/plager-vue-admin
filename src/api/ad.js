@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { user } from '@/store/modules/user'
 
 export function fetchList(query) {
   return request({
@@ -25,18 +26,22 @@ export function fetchPv(pv) {
   })
 }
 
-export function createAd(data) {
+export function createAd(data, token) {
   return request({
-    url: '/ads/',
+    url: '/admin/ads/',
     method: 'post',
+    params: { token },
     data
   })
 }
 
-export function updateAd(data) {
+export function updateAd(data, token) {
+
+
   return request({
-    url: '/ads/',
+    url: '/admin/ads/',
     method: 'put',
+    params: { token },
     data
   })
 }

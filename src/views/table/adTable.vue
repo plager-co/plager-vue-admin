@@ -183,6 +183,7 @@ export default {
         sponser_id: undefined,
         email: undefined,
         picture_link: undefined,
+        status: undefined,
         status_text: undefined,
         target_category: undefined,
         target_category2: undefined,
@@ -237,7 +238,18 @@ export default {
         timestamp: new Date(),
         title: '',
         type: '',
-        status: 'published'
+        sponser_id: undefined,
+        email: undefined,
+        picture_link: undefined,
+        status: undefined,
+        status_text: undefined,
+        target_category: undefined,
+        target_category2: undefined,
+        target_age: undefined,
+        target_sex: undefined,
+        required_influencer_follower: undefined,
+        period: undefined,
+        budget: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -271,6 +283,29 @@ export default {
               statusAds = '광고 진행중';
           } else if (filterAds === 'completed'){
             statusAds = '광고 완료';
+          } else if (filterAds === 'canceled'){
+            statusAds = '광고 취소';
+          } else if (filterAds === 'paused'){
+            statusAds = '광고 일시중지';
+          }
+          return statusAds;
+      },
+    getStatusNum(filterAds){
+          var statusAds = '';
+          if (filterAds === 'registered'){
+          statusAds = '0';
+          } else if (filterAds === 'reviewed'){
+              statusAds = '1';
+          } else if (filterAds === 'paid'){
+              statusAds = '2';
+          } else if (filterAds === 'started'){
+              statusAds = '3';
+          } else if (filterAds === 'completed'){
+            statusAds = '4';
+          } else if (filterAds === 'paused'){
+            statusAds = '-1';
+          } else if (filterAds === 'canceled'){
+            statusAds = '-2';
           }
           return statusAds;
       },
@@ -322,7 +357,6 @@ export default {
         remark: '',
         timestamp: new Date(),
         title: '',
-        status: 'published',
         type: ''
       }
     },
@@ -335,16 +369,16 @@ export default {
       })
     },
     createData() {
+      var token = this.$store.getters.token;
+      this.temp.status = this.getStatusNum(this.temp.status_text);
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createAd(this.temp).then(() => {
+          createAd(this.temp, token).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
-              title: '成功',
-              message: '创建成功',
+              title: '성공',
+              message: '등록 완료',
               type: 'success',
               duration: 2000
             })
@@ -362,11 +396,13 @@ export default {
       })
     },
     updateData() {
+      var token = this.$store.getters.token;
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateAd(tempData).then(() => {
+          this.temp.status = this.getStatusNum(this.temp.status_text);
+          updateAd(tempData, token).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
@@ -376,8 +412,8 @@ export default {
             }
             this.dialogFormVisible = false
             this.$notify({
-              title: '成功',
-              message: '更新成功',
+              title: '성공',
+              message: '업데이트 완료',
               type: 'success',
               duration: 2000
             })
