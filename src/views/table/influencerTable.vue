@@ -2,8 +2,8 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.id" placeholder="ID" style="width: 50px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.email" placeholder="인플루언서 Email" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.instagram" placeholder="인플루언서 인스타그램" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.email" placeholder="Email" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.instagram" placeholder="인스타그램" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-select v-model="listQuery.category" placeholder="카테고리" clearable style="width: 200px" class="filter-item">
         <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
       </el-select>
@@ -42,12 +42,12 @@
           <img :src="scope.row.picture_link" style="width:100%;">
         </template>
       </el-table-column>
-      <el-table-column label="인플루언서 이메일" width="150">
+      <el-table-column label="이메일" width="150">
         <template slot-scope="scope">
           <span class="link-type" @click="">{{ scope.row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="인플루언서 인스타그램" width="150">
+      <el-table-column label="인스타그램" width="150">
         <template slot-scope="scope">
           <span class="link-type" @click="">{{ scope.row.instagram }}</span>
         </template>
