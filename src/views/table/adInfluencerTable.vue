@@ -209,6 +209,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        id: undefined,
         ad_id: undefined,
         influencer_id: undefined,
         email: undefined,

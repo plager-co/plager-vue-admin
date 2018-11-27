@@ -2,15 +2,13 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.id" placeholder="ID" style="width: 50px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.ad_id" placeholder="광고 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.influencer_id" placeholder="인플루언서 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.email" placeholder="인플루언서 Email" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.instagram" placeholder="인플루언서 인스타그램" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-select v-model="listQuery.category" placeholder="카테고리" clearable style="width: 200px" class="filter-item">
+        <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
+      </el-select>
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"/>
-      </el-select>
-      <el-select v-model="listQuery.status_text" placeholder="진행 상태" clearable style="width: 200px" class="filter-item">
-        <el-option v-for="item in statusList" :key="item.key" :label="item.label" :value="item.key"/>
       </el-select>
       등록 날짜:
       <el-input v-model="listQuery.min_created_at" placeholder="ex)180510" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
@@ -39,16 +37,6 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="광고 ID" prop="id" sortable="custom" align="center" width="65">
-        <template slot-scope="scope">
-          <span>{{ scope.row.ad_id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="인플루언서 ID" prop="id" sortable="custom" align="center" width="65">
-        <template slot-scope="scope">
-          <span>{{ scope.row.influencer_id }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="인플루언서" width="100">
         <template slot-scope="scope">
           <img :src="scope.row.picture_link" style="width:100%;">
@@ -64,24 +52,24 @@
           <span class="link-type" @click="">{{ scope.row.instagram }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="진행 상태" class-name="status-col" width="150">
+      <el-table-column label="카테고리" width="150" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
+          <span>{{ scope.row.category }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 Like 수" width="100" align="center">
+      <el-table-column label="총 Like 수" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.target_like_count }}</span>
+          <span>{{ scope.row.total_like_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 Post 수" width="100" align="center">
+      <el-table-column label="총 Post 수" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.target_post_count }}</span>
+          <span>{{ scope.row.total_post_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 동영상 수" width="100" align="center">
+      <el-table-column label="총 동영상 수" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.target_movie_count }}</span>
+          <span>{{ scope.row.total_movie_count }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
@@ -96,52 +84,57 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:100px;">
-        <el-form-item label="광고 ID" prop="email">
-          <el-input v-model="temp.ad_id"/>
+        <el-form-item label="Email" prop="email">
+          <el-input v-model="temp.email"/>
         </el-form-item>
-        <el-form-item label="인플루언서 ID" prop="email">
-          <el-input v-model="temp.influencer_id"/>
+        <el-form-item label="Password" prop="email">
+          <el-input v-model="temp.password"/>
         </el-form-item>
-        <el-form-item label="상태">
-          <el-select v-model="temp.status_text" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusList" :key="item.key" :label="item.label" :value="item.key"/>
+        <el-form-item label="Instagram" prop="email">
+          <el-input v-model="temp.instagram"/>
+        </el-form-item>
+        <el-form-item label="카테고리">
+          <el-select v-model="temp.category" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="기간">
-          <el-input v-model="temp.period"/>
+        <el-form-item label="카테고리2">
+          <el-select v-model="temp.category2" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="이름">
+          <el-input v-model="temp.name"/>
+        </el-form-item>
+        <el-form-item label="국가">
+          <el-input v-model="temp.country"/>
+        </el-form-item>
+        <el-form-item label="성별">
+          <el-input v-model="temp.gender"/>
+        </el-form-item>
+        <el-form-item label="총 팔로워 수">
+          <el-input v-model="temp.total_follower_count"/>
+        </el-form-item>
+        <el-form-item label="총 포스트 수">
+          <el-input v-model="temp.total_post_count"/>
+        </el-form-item>
+        <el-form-item label="총 좋아요 수">
+          <el-input v-model="temp.total_like_count"/>
+        </el-form-item>
+        <el-form-item label="총 댓글 수">
+          <el-input v-model="temp.total_comment_count"/>
+        </el-form-item>
+        <el-form-item label="총 동영상 수">
+          <el-input v-model="temp.total_movie_count"/>
+        </el-form-item>
+        <el-form-item label="총 재생 수">
+          <el-input v-model="temp.total_play_count"/>
         </el-form-item>
         <el-form-item label="가격">
-          <el-input v-model="temp.price"/>
+          <el-input v-model="temp.influencer_cost"/>
         </el-form-item>
-        <el-form-item label="지급 개월">
-          <el-input v-model="temp.paid_month"/>
-        </el-form-item>
-        <el-form-item label="목표 노출 수">
-          <el-input v-model="temp.target_impression_count"/>
-        </el-form-item>
-        <el-form-item label="목표 도달 수">
-          <el-input v-model="temp.target_reach_count"/>
-        </el-form-item>
-        <el-form-item label="목표 포스트 수">
-          <el-input v-model="temp.target_post_count"/>
-        </el-form-item>
-        <el-form-item label="목표 좋아요 수">
-          <el-input v-model="temp.target_like_count"/>
-        </el-form-item>
-        <el-form-item label="목표 댓글 수">
-          <el-input v-model="temp.target_comment_count"/>
-        </el-form-item>
-        <el-form-item label="목표 저장 수">
-          <el-input v-model="temp.target_save_count"/>
-        </el-form-item>
-        <el-form-item label="목표 동영상 수">
-          <el-input v-model="temp.target_movie_count"/>
-        </el-form-item>
-        <el-form-item label="목표 재생 수">
-          <el-input v-model="temp.target_play_count"/>
-        </el-form-item>
-        <el-form-item label="목표 인바운드 수">
-          <el-input v-model="temp.target_inbound_count"/>
+        <el-form-item label="대표 이미지 URL" prop="email">
+          <el-input v-model="temp.picture_link"/>
         </el-form-item>
 
       </el-form>
@@ -165,7 +158,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createAdInfluencer, updateAdInfluencer } from '@/api/adInfluencer'
+import { fetchList, fetchPv, createInfluencer, updateInfluencer } from '@/api/influencer'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -209,39 +202,38 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        ad_id: undefined,
-        influencer_id: undefined,
+        id: undefined,
         email: undefined,
+        password: undefined,
         instagram: undefined,
+        category: undefined,
+        category2: undefined,
         picture_link: undefined,
-        status: undefined,
-        status_text: undefined,
-        period: undefined,
+        name: undefined,
+        country: undefined,
         created_at: undefined,
         updated_at: undefined,
-        started_at: undefined,
-        paused_at: undefined,
-        completed_at: undefined,
-        is_recommended: undefined,
-        is_selected: undefined,
-        is_deposited: undefined,
-        is_deposit_requested: undefined,
-        is_paid: undefined,
-        price: undefined,
-        payment_method: undefined,
-        paid_month: undefined,
-        duplicate_follower_count: undefined,
-        target_impression_count: undefined,
-        target_reach_count: undefined,
-        target_post_count: undefined,
-        target_like_count: undefined,
-        target_comment_count: undefined,
-        target_save_count: undefined,
-        target_movie_count: undefined,
-        target_play_count: undefined,
-        target_inbound_count: undefined,
+        gender: undefined,
+        total_follower_count: undefined,
+        total_post_count: undefined,
+        total_like_count: undefined,
+        total_comment_count: undefined,
+        total_movie_count: undefined,
+        total_play_count: undefined,
+        influencer_cost: undefined,
         sort: '+id'
       },
+      targetCategoryList:[
+        { label: '뷰티', key: '뷰티' },
+        { label: '패션', key: '패션' },
+        { label: '유아용품', key: '유아용품' },
+        { label: '식음료', key: '식음료' },
+        { label: '스포츠', key: '스포츠' },
+        { label: '전자기기', key: '전자기기' },
+        { label: '자동차', key: '자동차' },
+        { label: '홈인테리어', key: '홈인테리어' },
+        { label: '기타', key: '기타' },
+      ],
       statusList:  [
         { label: '광고주 추천', key: 'recommended' },
         { label: '검토 완료', key: 'reviewed' },
@@ -256,8 +248,8 @@ export default {
       sortOptions: [
         { label: 'ID 오름차순', key: '+id' },
         { label: 'ID 내림차순', key: '-id' },
-        { label: '인플루언서 인스타그램 오름차순', key: '+instagram' },
-        { label: '인플루언서 인스타그램 내림차순', key: '-instagram' },
+        { label: '인스타그램 ID 오름차순', key: '+instagram' },
+        { label: '인스타그램 ID 내림차순', key: '-instagram' },
       ],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
@@ -268,37 +260,24 @@ export default {
         timestamp: new Date(),
         title: '',
         type: '',
-        ad_id: undefined,
-        influencer_id: undefined,
         email: undefined,
+        password: undefined,
         instagram: undefined,
+        category: undefined,
+        category2: undefined,
         picture_link: undefined,
-        status: undefined,
-        status_text: undefined,
-        period: undefined,
         created_at: undefined,
         updated_at: undefined,
-        started_at: undefined,
-        paused_at: undefined,
-        completed_at: undefined,
-        is_recommended: undefined,
-        is_selected: undefined,
-        is_deposited: undefined,
-        is_deposit_requested: undefined,
-        is_paid: undefined,
-        price: undefined,
-        payment_method: undefined,
-        paid_month: undefined,
-        duplicate_follower_count: undefined,
-        target_impression_count: undefined,
-        target_reach_count: undefined,
-        target_post_count: undefined,
-        target_like_count: undefined,
-        target_comment_count: undefined,
-        target_save_count: undefined,
-        target_movie_count: undefined,
-        target_play_count: undefined,
-        target_inbound_count: undefined,
+        name: undefined,
+        country: undefined,
+        gender: undefined,
+        total_follower_count: undefined,
+        total_post_count: undefined,
+        total_like_count: undefined,
+        total_comment_count: undefined,
+        total_movie_count: undefined,
+        total_play_count: undefined,
+        influencer_cost: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -426,9 +405,14 @@ export default {
     createData() {
       var token = this.$store.getters.token;
       this.temp.status = this.getStatusNum(this.temp.status_text);
+      this.temp.created_at = new Date().toISOString().slice(0,10);
+      this.temp.updated_at = new Date().toISOString().slice(0,10);
+      this.temp.user_type = 'influencer';
+      console.log("this.temp.created_at");
+      console.log(this.temp.created_at);
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createAdInfluencer(this.temp, token).then(() => {
+          createInfluencer(this.temp, token).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -457,7 +441,7 @@ export default {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           this.temp.status = this.getStatusNum(this.temp.status_text);
-          updateAdInfluencer(tempData, token).then(() => {
+          updateInfluencer(tempData, token).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
@@ -495,8 +479,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', 'email', 'status_text', 'target_category', 'target_age', 'target_sex', 'created_at']
-        const filterVal = ['id', 'email', 'status_text', 'target_category', 'target_age', 'target_sex', 'created_at']
+        const tHeader = ['id', 'email', 'status_text', 'category', 'target_age', 'target_sex', 'created_at']
+        const filterVal = ['id', 'email', 'status_text', 'category', 'target_age', 'target_sex', 'created_at']
         const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,
