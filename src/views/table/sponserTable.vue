@@ -4,7 +4,7 @@
       <el-input v-model="listQuery.id" placeholder="ID" style="width: 50px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.email" placeholder="Email" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.instagram" placeholder="인스타그램" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-select v-model="listQuery.category" placeholder="카테고리" clearable style="width: 200px" class="filter-item">
+      <el-select v-model="listQuery.company_category" placeholder="카테고리" clearable style="width: 200px" class="filter-item">
         <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
       </el-select>
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
@@ -37,7 +37,7 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="인플루언서" width="100">
+      <el-table-column label="광고주" width="100">
         <template slot-scope="scope">
           <img :src="scope.row.picture_link" style="width:100%;">
         </template>
@@ -54,22 +54,22 @@
       </el-table-column>
       <el-table-column label="카테고리" width="150" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.category }}</span>
+          <span>{{ scope.row.company_category }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="총 Like 수" width="100" align="center">
+      <el-table-column label="회사명" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.total_like_count }}</span>
+          <span>{{ scope.row.company_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="총 Post 수" width="100" align="center">
+      <el-table-column label="담당자" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.total_post_count }}</span>
+          <span>{{ scope.row.officer_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="총 동영상 수" width="100" align="center">
+      <el-table-column label="연락처" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.total_movie_count }}</span>
+          <span>{{ scope.row.contact }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
@@ -94,44 +94,44 @@
           <el-input v-model="temp.instagram"/>
         </el-form-item>
         <el-form-item label="카테고리">
-          <el-select v-model="temp.category" class="filter-item" placeholder="Please select">
+          <el-select v-model="temp.company_category" class="filter-item" placeholder="Please select">
             <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
         <el-form-item label="카테고리2">
-          <el-select v-model="temp.category2" class="filter-item" placeholder="Please select">
+          <el-select v-model="temp.company_category2" class="filter-item" placeholder="Please select">
             <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="이름">
-          <el-input v-model="temp.name"/>
+        <el-form-item label="회사명">
+          <el-input v-model="temp.company_name"/>
+        </el-form-item>
+        <el-form-item label="담당자 이름">
+          <el-input v-model="temp.officer_name"/>
+        </el-form-item>
+        <el-form-item label="세금 발급용 이메일">
+          <el-input v-model="temp.tax_email"/>
+        </el-form-item>
+        <el-form-item label="연락처">
+          <el-input v-model="temp.contact"/>
+        </el-form-item>
+        <el-form-item label="회사 웹사이트">
+          <el-input v-model="temp.company_website"/>
+        </el-form-item>
+        <el-form-item label="사업자 등록증">
+          <el-input v-model="temp.document_link"/>
+        </el-form-item>
+        <el-form-item label="인스타그램">
+          <el-input v-model="temp.instagram"/>
+        </el-form-item>
+        <el-form-item label="페이스북">
+          <el-input v-model="temp.facebook"/>
+        </el-form-item>
+        <el-form-item label="소셜 아이디">
+          <el-input v-model="temp.social"/>
         </el-form-item>
         <el-form-item label="국가">
           <el-input v-model="temp.country"/>
-        </el-form-item>
-        <el-form-item label="성별">
-          <el-input v-model="temp.gender"/>
-        </el-form-item>
-        <el-form-item label="총 팔로워 수">
-          <el-input v-model="temp.total_follower_count"/>
-        </el-form-item>
-        <el-form-item label="총 포스트 수">
-          <el-input v-model="temp.total_post_count"/>
-        </el-form-item>
-        <el-form-item label="총 좋아요 수">
-          <el-input v-model="temp.total_like_count"/>
-        </el-form-item>
-        <el-form-item label="총 댓글 수">
-          <el-input v-model="temp.total_comment_count"/>
-        </el-form-item>
-        <el-form-item label="총 동영상 수">
-          <el-input v-model="temp.total_movie_count"/>
-        </el-form-item>
-        <el-form-item label="총 재생 수">
-          <el-input v-model="temp.total_play_count"/>
-        </el-form-item>
-        <el-form-item label="가격">
-          <el-input v-model="temp.influencer_cost"/>
         </el-form-item>
         <el-form-item label="대표 이미지 URL" prop="email">
           <el-input v-model="temp.picture_link"/>
@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createInfluencer, updateInfluencer } from '@/api/influencer'
+import { fetchList, fetchPv, createSponser, updateSponser } from '@/api/sponser'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -206,21 +206,21 @@ export default {
         email: undefined,
         password: undefined,
         instagram: undefined,
-        category: undefined,
-        category2: undefined,
         picture_link: undefined,
         name: undefined,
         country: undefined,
         created_at: undefined,
         updated_at: undefined,
-        gender: undefined,
-        total_follower_count: undefined,
-        total_post_count: undefined,
-        total_like_count: undefined,
-        total_comment_count: undefined,
-        total_movie_count: undefined,
-        total_play_count: undefined,
-        influencer_cost: undefined,
+        company_name: undefined,
+        company_category: undefined,
+        company_category2: undefined,
+        officer_name: undefined,
+        tax_email: undefined,
+        contact: undefined,
+        company_website: undefined,
+        document_link: undefined,
+        facebook: undefined,
+        social: undefined,
         sort: '+id'
       },
       targetCategoryList:[
@@ -263,21 +263,19 @@ export default {
         email: undefined,
         password: undefined,
         instagram: undefined,
-        category: undefined,
-        category2: undefined,
         picture_link: undefined,
         created_at: undefined,
         updated_at: undefined,
-        name: undefined,
-        country: undefined,
-        gender: undefined,
-        total_follower_count: undefined,
-        total_post_count: undefined,
-        total_like_count: undefined,
-        total_comment_count: undefined,
-        total_movie_count: undefined,
-        total_play_count: undefined,
-        influencer_cost: undefined,
+        company_name: undefined,
+        company_category: undefined,
+        company_category2: undefined,
+        officer_name: undefined,
+        tax_email: undefined,
+        contact: undefined,
+        company_website: undefined,
+        document_link: undefined,
+        facebook: undefined,
+        social: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -407,12 +405,12 @@ export default {
       this.temp.status = this.getStatusNum(this.temp.status_text);
       this.temp.created_at = new Date().toISOString().slice(0,10);
       this.temp.updated_at = new Date().toISOString().slice(0,10);
-      this.temp.user_type = 'influencer';
+      this.temp.user_type = 'sponser';
       console.log("this.temp.created_at");
       console.log(this.temp.created_at);
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createInfluencer(this.temp, token).then(() => {
+          createSponser(this.temp, token).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -441,7 +439,7 @@ export default {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           this.temp.status = this.getStatusNum(this.temp.status_text);
-          updateInfluencer(tempData, token).then(() => {
+          updateSponser(tempData, token).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
