@@ -8,7 +8,7 @@ export function fetchList(query) {
   })
 }
 
-export function fetchAdInfluencers(id) {
+export function fetchAdInfluencer(id) {
   return request({
     url: '/ad_influencers/' + id,
     method: 'get',
@@ -25,7 +25,7 @@ export function fetchPv(pv) {
   })
 }
 
-export function createAdInfluencers(data, token) {
+export function createAdInfluencer(data, token) {
   return request({
     url: '/admin/ad_influencers/',
     method: 'post',
@@ -34,7 +34,7 @@ export function createAdInfluencers(data, token) {
   })
 }
 
-export function updateAdInfluencers(data, token) {
+export function updateAdInfluencer(data, token) {
 
 
   return request({
