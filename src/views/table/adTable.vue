@@ -18,9 +18,17 @@
       <el-input v-model="listQuery.sponser_id" placeholder="광고주 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.email" placeholder="광고주 이메일" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
+      등록 날짜:
+      <el-input v-model="listQuery.min_created_at" placeholder="ex)180510" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      ~
+      <el-input v-model="listQuery.max_created_at" placeholder="ex)181212" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
+    </div>
+    <div class="count" style="margin:20px;">
+          총: {{ total }} , 어제: {{ yesterday_total }} , 오늘: {{ today_total }}
     </div>
 
     <el-table
@@ -195,6 +203,8 @@ export default {
         required_influencer_follower: undefined,
         period: undefined,
         budget: undefined,
+        min_created_at: undefined,
+        max_created_at: undefined,
         sort: '+id'
       },
       statusList:  [
@@ -317,7 +327,9 @@ export default {
         this.list = response.data.result
         console.log("this.list");
         console.log(this.list);
-        this.total = response.data.count
+        this.total = response.data.count;
+        this.yesterday_total = response.data.yesterday_count;
+        this.today_total = response.data.today_count;
 
         // Just to simulate the time of the request
         setTimeout(() => {
