@@ -177,7 +177,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'AdInfluencerTable',
+  name: 'SponserTable',
   components: { Pagination },
   directives: { waves },
   filters: {

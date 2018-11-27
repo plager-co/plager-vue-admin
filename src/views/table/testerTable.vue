@@ -4,9 +4,7 @@
       <el-input v-model="listQuery.id" placeholder="ID" style="width: 50px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.email" placeholder="Email" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.instagram" placeholder="인스타그램" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-select v-model="listQuery.category" placeholder="카테고리" clearable style="width: 200px" class="filter-item">
-        <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
-      </el-select>
+
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"/>
       </el-select>
@@ -52,11 +50,6 @@
           <span class="link-type" @click="">{{ scope.row.instagram }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="카테고리" width="150" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.category }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="총 Like 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.total_like_count }}</span>
@@ -87,21 +80,8 @@
         <el-form-item label="Email" prop="email">
           <el-input v-model="temp.email"/>
         </el-form-item>
-        <el-form-item label="Password" prop="email">
-          <el-input v-model="temp.password"/>
-        </el-form-item>
         <el-form-item label="Instagram" prop="email">
           <el-input v-model="temp.instagram"/>
-        </el-form-item>
-        <el-form-item label="카테고리">
-          <el-select v-model="temp.category" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="카테고리2">
-          <el-select v-model="temp.category2" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
         </el-form-item>
         <el-form-item label="이름">
           <el-input v-model="temp.name"/>
@@ -158,7 +138,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createInfluencer, updateInfluencer } from '@/api/influencer'
+import { fetchList, fetchPv, createTester, updateTester } from '@/api/tester'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -177,7 +157,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'AdInfluencerTable',
+  name: 'TesterTable',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -404,15 +384,11 @@ export default {
     },
     createData() {
       var token = this.$store.getters.token;
-      this.temp.status = this.getStatusNum(this.temp.status_text);
       this.temp.created_at = new Date().toISOString().slice(0,10);
       this.temp.updated_at = new Date().toISOString().slice(0,10);
-      this.temp.user_type = 'influencer';
-      console.log("this.temp.created_at");
-      console.log(this.temp.created_at);
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createInfluencer(this.temp, token).then(() => {
+          createTester(this.temp, token).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -441,7 +417,7 @@ export default {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           this.temp.status = this.getStatusNum(this.temp.status_text);
-          updateInfluencer(tempData, token).then(() => {
+          updateTester(tempData, token).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
