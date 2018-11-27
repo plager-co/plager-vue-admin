@@ -1,16 +1,19 @@
 import request from '@/utils/request'
 
 export function fetchList(query) {
+
+  query.user_type = 'influencer';
+
   return request({
-    url: '/ads/',
+    url: '/users/',
     method: 'get',
     params: query
   })
 }
 
-export function fetchAd(id) {
+export function fetchInfluencer(id) {
   return request({
-    url: '/ads/' + id,
+    url: '/users/' + id,
     method: 'get',
     params: { id }
   })
@@ -25,20 +28,20 @@ export function fetchPv(pv) {
   })
 }
 
-export function createAd(data, token) {
+export function createInfluencer(data, token) {
   return request({
-    url: '/admin/ads/',
+    url: '/admin/users/',
     method: 'post',
     params: { token },
     data
   })
 }
 
-export function updateAd(data, token) {
+export function updateInfluencer(data, token) {
 
 
   return request({
-    url: '/admin/ads/',
+    url: '/admin/users/',
     method: 'put',
     params: { token },
     data

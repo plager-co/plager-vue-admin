@@ -2,15 +2,15 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
   return request({
-    url: '/ads/',
+    url: '/ad_influencers/',
     method: 'get',
     params: query
   })
 }
 
-export function fetchAd(id) {
+export function fetchAdInfluencers(id) {
   return request({
-    url: '/ads/' + id,
+    url: '/ad_influencers/' + id,
     method: 'get',
     params: { id }
   })
@@ -25,20 +25,20 @@ export function fetchPv(pv) {
   })
 }
 
-export function createAd(data, token) {
+export function createAdInfluencers(data, token) {
   return request({
-    url: '/admin/ads/',
+    url: '/admin/ad_influencers/',
     method: 'post',
     params: { token },
     data
   })
 }
 
-export function updateAd(data, token) {
+export function updateAdInfluencers(data, token) {
 
 
   return request({
-    url: '/admin/ads/',
+    url: '/admin/ad_influencers/',
     method: 'put',
     params: { token },
     data
