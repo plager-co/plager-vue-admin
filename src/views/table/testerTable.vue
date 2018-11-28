@@ -177,6 +177,8 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      yesterday_total: null,
+      today_total: null,
       total: 0,
       listLoading: true,
       listQuery: {

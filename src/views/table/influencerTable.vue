@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column label="인플루언서" width="100">
         <template slot-scope="scope">
-          <img :src="scope.row.picture_link" style="width:100%;">
+          <img :src="scope.row.picture_link" :style="getBlockedCss(scope.row.is_blocked)">
         </template>
       </el-table-column>
       <el-table-column label="이메일" width="150">
@@ -70,6 +70,13 @@
       <el-table-column label="총 동영상 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.total_movie_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="태그" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.is_blocked" type="error" size="normal" >블랙리스트</el-button>
+          <br><el-button v-if="scope.row.is_fake_instagram" type="warning" size="normal" >가짜 인플루언서</el-button>
+
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
@@ -136,6 +143,16 @@
         <el-form-item label="대표 이미지 URL" prop="email">
           <el-input v-model="temp.picture_link"/>
         </el-form-item>
+        <el-form-item label="블랙 리스트" prop="email">
+          <el-select v-model="temp.is_blocked" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in yesNoList" :key="item.key" :label="item.label" :value="item.key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="가짜 인플루언서" prop="email">
+          <el-select v-model="temp.is_fake_instagram" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in yesNoList" :key="item.key" :label="item.label" :value="item.key"/>
+          </el-select>
+        </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -197,6 +214,8 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      yesterday_total: null,
+      today_total: null,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -221,8 +240,14 @@ export default {
         total_movie_count: undefined,
         total_play_count: undefined,
         influencer_cost: undefined,
+        is_blocked: undefined,
+        is_fake_instagram: undefined,
         sort: '+id'
       },
+      yesNoList:[
+        { label: '예', key: '1' },
+        { label: '아니요', key: '0' },
+      ],
       targetCategoryList:[
         { label: '뷰티', key: '뷰티' },
         { label: '패션', key: '패션' },
@@ -278,6 +303,8 @@ export default {
         total_movie_count: undefined,
         total_play_count: undefined,
         influencer_cost: undefined,
+        is_blocked: undefined,
+        is_fake_instagram: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -299,6 +326,13 @@ export default {
     this.getList()
   },
   methods: {
+    getBlockedCss(isBlocked) {
+      if (isBlocked === 1) {
+        return 'width: 100%; border: 5px solid red;'
+      } else {
+        return 'width: 100%; '
+      }
+    },
     getStatus(filterAds){
           var statusAds = '';
           if (filterAds === 'registered'){
