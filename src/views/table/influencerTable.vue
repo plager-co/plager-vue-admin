@@ -77,6 +77,21 @@
           <span>{{ scope.row.total_movie_count }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="총 댓글 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_comment_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="총 팔로워 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_follower_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="총 조회 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_play_count }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="수령 광고비" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.total_paid }}</span>
@@ -293,6 +308,18 @@ export default {
         { label: 'ID 내림차순', key: '-id' },
         { label: '인스타그램 ID 오름차순', key: '+instagram' },
         { label: '인스타그램 ID 내림차순', key: '-instagram' },
+        { label: '팔로워 수 오름차순', key: '+total_follower_count' },
+        { label: '팔로워 수 오름차순', key: '-total_follower_count' },
+        { label: '포스트 수 오름차순', key: '+total_post_count' },
+        { label: '포스트 수 내림차순', key: '-total_post_count' },
+        { label: '좋아요 수 오름차순', key: '+total_like_count' },
+        { label: '좋아요 수 내림차순', key: '-total_like_count' },
+        { label: '댓글 수 오름차순', key: '+total_comment_count' },
+        { label: '댓글 수 내림차순', key: '-total_comment_count' },
+        { label: '동영상 수 오름차순', key: '+total_movie_count' },
+        { label: '동영상 수 내림차순', key: '-total_movie_count' },
+        { label: '재생 수 오름차순', key: '+total_play_count' },
+        { label: '재생 수 내림차순', key: '-total_play_count' },
       ],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
