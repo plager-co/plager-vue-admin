@@ -75,6 +75,11 @@
           <span>{{ scope.row.target_sex }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="등록 날짜" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.created_at }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
@@ -212,6 +217,7 @@ export default {
         budget: undefined,
         min_created_at: undefined,
         max_created_at: undefined,
+        created_at: undefined,
         sort: '+id'
       },
       statusList:  [
@@ -267,6 +273,7 @@ export default {
         required_influencer_follower: undefined,
         period: undefined,
         budget: undefined,
+        created_at: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',
