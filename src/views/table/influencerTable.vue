@@ -77,6 +77,11 @@
           <span>{{ scope.row.total_movie_count }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="수령 광고비" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_paid }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="태그" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="scope.row.is_blocked" type="error" size="normal" >블랙리스트</el-button>
@@ -114,6 +119,9 @@
           <el-select v-model="temp.category2" class="filter-item" placeholder="Please select">
             <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
+        </el-form-item>
+        <el-form-item label="총 수령 광고비">
+          <el-input v-model="temp.total_paid"/>
         </el-form-item>
         <el-form-item label="이름">
           <el-input v-model="temp.name"/>
@@ -251,6 +259,7 @@ export default {
         is_blocked: undefined,
         is_fake_instagram: undefined,
         influencer_effect_rate: undefined,
+        total_paid: undefined,
         sort: '+id'
       },
       yesNoList:[
@@ -315,6 +324,7 @@ export default {
         is_blocked: undefined,
         is_fake_instagram: undefined,
         influencer_effect_rate: undefined,
+        total_paid: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',
