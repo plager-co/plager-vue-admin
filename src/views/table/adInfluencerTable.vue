@@ -69,6 +69,16 @@
           <el-tag :type="scope.row.status | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="광고 비용" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.price }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="계약 월" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.paid_month }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="목표 Like 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_like_count }}</span>
