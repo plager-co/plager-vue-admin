@@ -106,6 +106,7 @@
         <template slot-scope="scope">
           <el-button v-if="scope.row.is_blocked" type="error" size="normal" >블랙리스트</el-button>
           <br><el-button v-if="scope.row.is_fake_instagram" type="warning" size="normal" >가짜 인플루언서</el-button>
+          <br><el-button v-if="scope.row.is_delete_requested" type="error" size="normal" >계정 삭제 요청</el-button>
 
         </template>
       </el-table-column>
@@ -189,6 +190,11 @@
         </el-form-item>
         <el-form-item label="가짜 인플루언서" prop="email">
           <el-select v-model="temp.is_fake_instagram" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in yesNoList" :key="item.key" :label="item.label" :value="item.key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="유저 삭제" prop="email">
+          <el-select v-model="temp.is_removed" class="filter-item" placeholder="Please select">
             <el-option v-for="item in yesNoList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
@@ -284,6 +290,8 @@ export default {
         is_fake_instagram: undefined,
         influencer_effect_rate: undefined,
         total_paid: undefined,
+        is_removed: undefined,
+        is_delete_requested: undefined,
         sort: '+id'
       },
       yesNoList:[
@@ -362,6 +370,8 @@ export default {
         is_fake_instagram: undefined,
         influencer_effect_rate: undefined,
         total_paid: undefined,
+        is_removed: undefined,
+        is_delete_requested: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',

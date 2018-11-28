@@ -3,6 +3,7 @@ import request from '@/utils/request'
 export function fetchList(query) {
 
   query.user_type = 'sponser';
+  query.is_removed = 0;
 
   return request({
     url: '/users/',

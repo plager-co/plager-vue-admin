@@ -75,6 +75,7 @@
       <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <br><el-button v-if="scope.row.is_delete_requested" type="error" size="normal" >계정 삭제 요청</el-button>
 
         </template>
       </el-table-column>
@@ -135,6 +136,11 @@
         </el-form-item>
         <el-form-item label="대표 이미지 URL" prop="email">
           <el-input v-model="temp.picture_link"/>
+        </el-form-item>
+        <el-form-item label="유저 삭제" prop="email">
+          <el-select v-model="temp.is_removed" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in yesNoList" :key="item.key" :label="item.label" :value="item.key"/>
+          </el-select>
         </el-form-item>
 
       </el-form>
@@ -223,7 +229,9 @@ export default {
         document_link: undefined,
         facebook: undefined,
         social: undefined,
-        sort: '+id'
+        sort: '+id',
+        is_removed: undefined,
+        is_delete_requested: undefined,
       },
       targetCategoryList:[
         { label: '뷰티', key: '뷰티' },
@@ -278,6 +286,8 @@ export default {
         document_link: undefined,
         facebook: undefined,
         social: undefined,
+        is_removed: undefined,
+        is_delete_requested: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -285,6 +295,10 @@ export default {
         update: 'Edit',
         create: 'Create'
       },
+      yesNoList:[
+        { label: '예', key: '1' },
+        { label: '아니요', key: '0' },
+      ],
       dialogPvVisible: false,
       pvData: [],
       rules: {
