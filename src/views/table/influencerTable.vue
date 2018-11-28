@@ -57,6 +57,11 @@
           <span>{{ scope.row.influencer_effect_rate }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="등급" width="150" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.level }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="카테고리" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.category }}</span>
@@ -134,6 +139,9 @@
           <el-select v-model="temp.category2" class="filter-item" placeholder="Please select">
             <el-option v-for="item in targetCategoryList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
+        </el-form-item>
+        <el-form-item label="등급">
+          <el-input v-model="temp.level"/>
         </el-form-item>
         <el-form-item label="총 수령 광고비">
           <el-input v-model="temp.total_paid"/>
@@ -256,6 +264,7 @@ export default {
         email: undefined,
         password: undefined,
         instagram: undefined,
+        level: undefined,
         category: undefined,
         category2: undefined,
         picture_link: undefined,
@@ -333,6 +342,7 @@ export default {
         email: undefined,
         password: undefined,
         instagram: undefined,
+        level: undefined,
         category: undefined,
         category2: undefined,
         picture_link: undefined,
