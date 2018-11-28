@@ -57,7 +57,7 @@
       </el-table-column>
       <el-table-column label="진행 상태" class-name="status-col" width="150">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
+          <el-tag :type="scope.row.status_text | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="카테고리" width="150" align="center">
@@ -169,9 +169,13 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        paused: 'danger',
+        canceled: 'danger',
+        completed: 'success',
+        started: 'success',
+        paid: 'info',
+        reviewed: 'info',
+        registered: 'danger'
       }
       return statusMap[status]
     },
