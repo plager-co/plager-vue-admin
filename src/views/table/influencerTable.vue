@@ -52,6 +52,11 @@
           <span class="link-type" @click="">{{ scope.row.instagram }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="영향력(%)" width="150" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.influencer_effect_rate }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="카테고리" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.category }}</span>
@@ -142,6 +147,9 @@
         </el-form-item>
         <el-form-item label="대표 이미지 URL" prop="email">
           <el-input v-model="temp.picture_link"/>
+        </el-form-item>
+        <el-form-item label="영향력(%)">
+          <el-input v-model="temp.influencer_effect_rate"/>
         </el-form-item>
         <el-form-item label="블랙 리스트" prop="email">
           <el-select v-model="temp.is_blocked" class="filter-item" placeholder="Please select">
@@ -242,6 +250,7 @@ export default {
         influencer_cost: undefined,
         is_blocked: undefined,
         is_fake_instagram: undefined,
+        influencer_effect_rate: undefined,
         sort: '+id'
       },
       yesNoList:[
@@ -305,6 +314,7 @@ export default {
         influencer_cost: undefined,
         is_blocked: undefined,
         is_fake_instagram: undefined,
+        influencer_effect_rate: undefined,
       },
       dialogFormVisible: false,
       dialogStatus: '',
