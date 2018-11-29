@@ -391,12 +391,35 @@ export default {
     }
   },
   created() {
+        console.log("created")
+
     this.listQuery.id = this.$store.getters.influencer.id;
+    this.listQuery.category = this.$store.getters.influencer.category;
     this.getList()
+    if (this.$store.getters.influencer.sort){
+      this.listQuery.sort = this.$store.getters.influencer.sort;
+
+    }
+
+    if (this.$store.getters.influencer.limit) {
+      this.listQuery.limit = this.$store.getters.influencer.limit;
+    }
   },
-  destroyed() {
-    this.$store.commit('SET_INFLUENCER', {});
+  mounted(){
+        console.log("mounted")
+this.listQuery.id = this.$store.getters.influencer.id;
+    this.listQuery.category = this.$store.getters.influencer.category;
+    this.getList()
+    if (this.$store.getters.influencer.sort){
+      this.listQuery.sort = this.$store.getters.influencer.sort;
+
+    }
+
+    if (this.$store.getters.influencer.limit) {
+      this.listQuery.limit = this.$store.getters.influencer.limit;
+    }
   },
+
   methods: {
     getBlockedCss(isBlocked) {
       if (isBlocked === 1) {
@@ -542,7 +565,7 @@ export default {
     },
     showAdInfluencer(row) {
       this.$store.commit('SET_AD_INFLUENCER', { 'influencer_id': row.id});
-      this.$router.push('/ad-influencer-table/ad-influencer-table')
+      this.$router.push('/table/ad-influencer-table')
     },
     updateData() {
       var token = this.$store.getters.token;

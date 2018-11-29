@@ -7,9 +7,9 @@ Vue.use(Router)
 import Layout from '@/views/layout/Layout'
 
 /* Router Modules */
-import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
+import favoriteRouter from './modules/favorite'
+import store from '@/store'
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -98,7 +98,11 @@ export const asyncRouterMap = [
       path: 'ad-table',
       component: () => import('@/views/table/adTable'),
       name: 'adTable',
-      meta: { title: '광고' }
+      meta: { title: '광고' },
+      beforeEnter(to, from, next) {
+        store.commit('SET_AD', { } );
+        next();
+      }
     }
   ]
 },
@@ -116,7 +120,11 @@ export const asyncRouterMap = [
       path: 'ad-influencer-table',
       component: () => import('@/views/table/adInfluencerTable'),
       name: 'adInfluencerTable',
-      meta: { title: '광고-인플루언서' }
+      meta: { title: '광고-인플루언서' },
+      beforeEnter(to, from, next) {
+        store.commit('SET_AD_INFLUENCER', { } );
+        next();
+      }
     }
   ]
 },
@@ -134,7 +142,11 @@ export const asyncRouterMap = [
       path: 'influencer-table',
       component: () => import('@/views/table/influencerTable'),
       name: 'influencerTable',
-      meta: { title: '인플루언서' }
+      meta: { title: '인플루언서' },
+      beforeEnter(to, from, next) {
+        store.commit('SET_INFLUENCER', { } );
+        next();
+      }
     }
   ]
 },
@@ -152,7 +164,11 @@ export const asyncRouterMap = [
       path: 'sponser-table',
       component: () => import('@/views/table/sponserTable'),
       name: 'sponserTable',
-      meta: { title: '스폰서' }
+      meta: { title: '스폰서' },
+      beforeEnter(to, from, next) {
+        store.commit('SET_SPONSER', { } );
+        next();
+      }
     }
   ]
 },
@@ -170,11 +186,16 @@ export const asyncRouterMap = [
       path: 'tester-table',
       component: () => import('@/views/table/testerTable'),
       name: 'testerTable',
-      meta: { title: '영향력 테스터' }
+      meta: { title: '영향력 테스터' },
+      beforeEnter(to, from, next) {
+        store.commit('SET_TESTER', { } );
+        next();
+      }
     }
   ]
 },
   tableRouter,
+  favoriteRouter,
 
   { path: '*', redirect: '/404', hidden: true }
 ]

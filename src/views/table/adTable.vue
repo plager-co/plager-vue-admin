@@ -304,9 +304,6 @@ export default {
     console.log(this.listQuery);
     this.getList()
   },
-  destroyed() {
-    this.$store.commit('SET_AD', {});
-  },
   methods: {
     getStatus(filterAds){
           var statusAds = '';
@@ -436,11 +433,11 @@ export default {
     },
     showAdInfluencer(row) {
       this.$store.commit('SET_AD_INFLUENCER', { 'ad_id': row.id });
-      this.$router.push('/ad-influencer-table/ad-influencer-table')
+      this.$router.push('/table/ad-influencer-table')
     },
     showSponser(row) {
       this.$store.commit('SET_SPONSER', { 'id': row.sponser_id });
-      this.$router.push('/sponser-table/sponser-table')
+      this.$router.push('/table/sponser-table')
     },
     updateData() {
       var token = this.$store.getters.token;

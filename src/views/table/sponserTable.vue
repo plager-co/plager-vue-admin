@@ -319,9 +319,6 @@ export default {
     this.listQuery.id = this.$store.getters.sponser.id;
     this.getList()
   },
-  destroyed() {
-    this.$store.commit('SET_SPONSER', {});
-  },
   methods: {
     getStatus(filterAds){
           var statusAds = '';
@@ -460,7 +457,7 @@ export default {
     },
     showAd(row) {
       this.$store.commit('SET_AD', { 'sponser_id': row.id});
-      this.$router.push('/ad-table/ad-table')
+      this.$router.push('/table/ad-table')
     },
     updateData() {
       var token = this.$store.getters.token;

@@ -333,9 +333,6 @@ export default {
     this.listQuery.influencer_id = this.$store.getters.ad_influencer.influencer_id;
     this.getList()
   },
-  destroyed() {
-    this.$store.commit('SET_AD_INFLUENCER', {});
-  },
   methods: {
     getStatus(filterAds){
           var statusAds = '';
@@ -469,11 +466,11 @@ export default {
     },
     showAd(row) {
       this.$store.commit('SET_AD', { 'id': row.ad_id } );
-      this.$router.push('/ad-table/ad-table')
+      this.$router.push('/table/ad-table')
     },
     showInfluencer(row) {
       this.$store.commit('SET_INFLUENCER', { 'id': row.influencer_id} );
-      this.$router.push('/influencer-table/influencer-table')
+      this.$router.push('/table/influencer-table')
     },
     updateData() {
       var token = this.$store.getters.token;
