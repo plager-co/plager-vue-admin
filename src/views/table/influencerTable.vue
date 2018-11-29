@@ -110,7 +110,7 @@
 
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 광고</el-button>

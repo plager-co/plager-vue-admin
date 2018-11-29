@@ -72,10 +72,15 @@
           <span>{{ scope.row.contact }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
+      <el-table-column label="태그" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <br><el-button v-if="scope.row.is_delete_requested" type="error" size="normal" >계정 삭제 요청</el-button>
+
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <br><el-button v-if="scope.row.is_delete_requested" type="error" size="normal" >계정 삭제 요청</el-button>
           <br><el-button type="warning" size="normal" @click="showAd(scope.row)">관련 광고</el-button>
 
         </template>
