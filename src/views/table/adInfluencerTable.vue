@@ -97,6 +97,11 @@
       <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <br v-if="scope.row.status_text === 'recommended'"><el-button v-if="scope.row.status_text === 'recommended'" type="error" size="mini" @click="reviewAd(scope.row)">플래거 추천</el-button>
+          <br v-if="scope.row.status_text === 'chosen'"><el-button v-if="scope.row.status_text === 'chosen'" type="error" size="mini" @click="paidAd(scope.row)">결재 확인</el-button>
+          <br v-if="scope.row.status_text === 'paid'"><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
+          <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
+          <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
 
         </template>
       </el-table-column>
@@ -175,6 +180,7 @@
 </template>
 
 <script>
+import { updateAd } from '@/api/ad'
 import { fetchList, fetchPv, createAdInfluencer, updateAdInfluencer } from '@/api/adInfluencer'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
@@ -472,6 +478,164 @@ export default {
       this.$store.commit('SET_INFLUENCER', { 'id': row.influencer_id} );
       this.$router.push('/table/influencer-table')
     },
+    reviewAd(row) {
+      var token = this.$store.getters.token;
+      row.status = 1;
+      row.status_text = 'chosen';
+
+      const adInfluencerData = {
+        'id': row.id,
+        'status': 1,
+        'status_text': 'chosen',
+        'reviewed_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAdInfluencer(adInfluencerData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+          })
+      })
+    },
+    paidAd(row) {
+      var token = this.$store.getters.token;
+      row.status = 2;
+      row.status_text = 'paid';
+
+      const adInfluencerData = {
+        'id': row.id,
+        'status': 2,
+        'status_text': 'paid',
+        'paid_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAdInfluencer(adInfluencerData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+          })
+      })
+    },
+    startAd(row) {
+      var token = this.$store.getters.token;
+      row.status = 3;
+      row.status_text = 'started';
+
+      const adInfluencerData = {
+        'id': row.id,
+        'status': 3,
+        'status_text': 'started',
+        'started_at': new Date().toISOString().slice(0,10)
+      };
+      const adData = {
+        'id': row.ad_id,
+        'status': 3,
+        'status_text': 'started',
+        'started_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAdInfluencer(adInfluencerData, token).then(() => {
+        updateAd(adData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+          })
+        })
+      })
+    },
+
+    stopAd(row) {
+      var token = this.$store.getters.token;
+      row.status = -1;
+      row.status_text = 'paused';
+
+      const adInfluencerData = {
+        'id': row.id,
+        'status': -1,
+        'status_text': 'paused',
+        'paused_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAdInfluencer(adInfluencerData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+        })
+      })
+    },
+
+     finishAd(row) {
+      var token = this.$store.getters.token;
+      row.status = 4;
+      row.status_text = 'completed';
+
+      const adInfluencerData = {
+        'id': row.id,
+        'status': 4,
+        'status_text': 'completed',
+        'completed_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAdInfluencer(adInfluencerData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+          })
+      })
+    },
+
+
+
     updateData() {
       var token = this.$store.getters.token;
       this.$refs['dataForm'].validate((valid) => {

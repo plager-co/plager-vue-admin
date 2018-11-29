@@ -89,6 +89,11 @@
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 인플루언서</el-button>
+          <br v-if="scope.row.status_text === 'registered'" ><el-button v-if="scope.row.status_text === 'registered'" type="error" size="mini" @click="reviewAd(scope.row)">검토 완료</el-button>
+          <br v-if="scope.row.status_text === 'reviewed'" ><el-button v-if="scope.row.status_text === 'reviewed'" type="error" size="mini" @click="paidAd(scope.row)">결재 확인</el-button>
+          <br v-if="scope.row.status_text === 'paid'" ><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
+          <br v-if="scope.row.status_text === 'started'" ><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
+          <br v-if="scope.row.status_text === 'started'" ><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
 
         </template>
       </el-table-column>
@@ -465,6 +470,153 @@ export default {
         }
       })
     },
+      reviewAd(row) {
+      var token = this.$store.getters.token;
+      row.status = 1;
+      row.status_text = 'reviewed';
+
+      const adData = {
+        'id': row.id,
+        'status': 1,
+        'status_text': 'reviewed',
+        'reviewed_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAd(adData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+        })
+      })
+    },
+      paidAd(row) {
+      var token = this.$store.getters.token;
+      row.status = 2;
+      row.status_text = 'paid';
+
+      const adData = {
+        'id': row.id,
+        'status': 2,
+        'status_text': 'paid',
+        'paid_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAd(adData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+        })
+      })
+    },
+      startAd(row) {
+      var token = this.$store.getters.token;
+      row.status = 3;
+      row.status_text = 'started';
+
+      const adData = {
+        'id': row.id,
+        'status': 3,
+        'status_text': 'started',
+        'started_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAd(adData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+        })
+      })
+    },
+    stopAd(row) {
+      var token = this.$store.getters.token;
+      row.status = -1;
+      row.status_text = 'paused';
+
+      const adData = {
+        'id': row.id,
+        'status': -1,
+        'status_text': 'paused',
+        'paused_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAd(adData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+        })
+      })
+    },
+
+     finishAd(row) {
+      var token = this.$store.getters.token;
+      row.status = 4;
+      row.status_text = 'completed';
+
+      const adData = {
+        'id': row.id,
+        'status': 4,
+        'status_text': 'completed',
+        'completed_at': new Date().toISOString().slice(0,10)
+      };
+
+      updateAd(adData, token).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '성공',
+            message: '업데이트 완료',
+            type: 'success',
+            duration: 2000
+          })
+      })
+    },
+
     handleDelete(row) {
       this.$notify({
         title: '成功',
