@@ -36,7 +36,7 @@
       @sort-change="sortChange">
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="광고 ID" prop="id" sortable="custom" align="center" width="65">
