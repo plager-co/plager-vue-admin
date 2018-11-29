@@ -44,12 +44,12 @@
       </el-table-column>
       <el-table-column label="이메일" width="150">
         <template slot-scope="scope">
-          <span class="link-type" @click="">{{ scope.row.email }}</span>
+          <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
       <el-table-column label="인스타그램" width="150">
         <template slot-scope="scope">
-          <span class="link-type" @click="">{{ scope.row.instagram }}</span>
+          <span>{{ scope.row.instagram }}</span>
         </template>
       </el-table-column>
       <el-table-column label="영향력(%)" width="150" align="center">
@@ -113,6 +113,7 @@
       <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 광고</el-button>
 
         </template>
       </el-table-column>
@@ -390,7 +391,11 @@ export default {
     }
   },
   created() {
+    this.listQuery.id = this.$store.getters.influencer.id;
     this.getList()
+  },
+  destroyed() {
+    this.$store.commit('SET_INFLUENCER', {});
   },
   methods: {
     getBlockedCss(isBlocked) {
@@ -534,6 +539,10 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    showAdInfluencer(row) {
+      this.$store.commit('SET_AD_INFLUENCER', { 'influencer_id': row.id});
+      this.$router.push('/ad-influencer-table/ad-influencer-table')
     },
     updateData() {
       var token = this.$store.getters.token;

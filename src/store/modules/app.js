@@ -11,7 +11,8 @@ const app = {
     size: Cookies.get('size') || 'medium',
     ad: {},
     ad_influencer: {},
-    user: {},
+    influencer: {},
+    sponser: {},
     tester: {},
   },
   mutations: {
@@ -21,10 +22,13 @@ const app = {
     SET_AD_INFLUENCER: (state, data) => {
       state.ad_influencer = data
     },
-    SET_USER: (state, data) => {
-      state.user = data
+    SET_INFLUENCER: (state, data) => {
+      state.influencer = data
     },
-    SET_TESTER: (state, id) => {
+    SET_SPONSER: (state, data) => {
+      state.sponser = data
+    },
+    SET_TESTER: (state, data) => {
       state.ad = data
     },
     TOGGLE_SIDEBAR: state => {

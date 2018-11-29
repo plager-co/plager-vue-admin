@@ -17,7 +17,8 @@ const getters = {
   errorLogs: state => state.errorLog.logs,
   ad: state => state.app.ad,
   ad_influencer: state => state.app.ad_influencer,
-  user: state => state.app.user,
+  influencer: state => state.app.influencer,
+  sponser: state => state.app.sponser,
   tester: state => state.app.tester
 }
 export default getters

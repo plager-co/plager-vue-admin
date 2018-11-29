@@ -45,6 +45,11 @@
           <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.id }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="광고주 ID" width="100">
+        <template slot-scope="scope">
+          <span class="link-type" @click="showSponser(scope.row)">{{ scope.row.sponser_id }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="광고주" width="100">
         <template slot-scope="scope">
           <img :src="scope.row.picture_link" style="width:100%;">
@@ -52,7 +57,7 @@
       </el-table-column>
       <el-table-column label="광고주 이메일" width="150">
         <template slot-scope="scope">
-          <span class="link-type" @click="">{{ scope.row.email }}</span>
+          <span class="link-type" @click="showSponser(scope.row)">{{ scope.row.email }}</span>
         </template>
       </el-table-column>
       <el-table-column label="진행 상태" class-name="status-col" width="150">
@@ -293,7 +298,14 @@ export default {
     }
   },
   created() {
+    this.listQuery.id = this.$store.getters.ad.id;
+    this.listQuery.sponser_id = this.$store.getters.ad.sponser_id;
+    console.log("this.listQuery");
+    console.log(this.listQuery);
     this.getList()
+  },
+  destroyed() {
+    this.$store.commit('SET_AD', {});
   },
   methods: {
     getStatus(filterAds){
@@ -423,10 +435,12 @@ export default {
       })
     },
     showAdInfluencer(row) {
-      console.log("row");
-      console.log(row);
-      this.$store.commit('SET_AD', row);
+      this.$store.commit('SET_AD_INFLUENCER', { 'ad_id': row.id });
       this.$router.push('/ad-influencer-table/ad-influencer-table')
+    },
+    showSponser(row) {
+      this.$store.commit('SET_SPONSER', { 'id': row.sponser_id });
+      this.$router.push('/sponser-table/sponser-table')
     },
     updateData() {
       var token = this.$store.getters.token;

@@ -173,6 +173,9 @@ export default {
       return calendarTypeKeyValue[type]
     }
   },
+  destroyed() {
+    this.$store.commit('SET_TESTER', {});
+  },
   data() {
     return {
       tableKey: 0,
@@ -278,6 +281,7 @@ export default {
     }
   },
   created() {
+  this.listQuery.id = this.$store.getters.tester.id;
     this.getList()
   },
   methods: {

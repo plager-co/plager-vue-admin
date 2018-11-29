@@ -44,12 +44,12 @@
       </el-table-column>
       <el-table-column label="이메일" width="150">
         <template slot-scope="scope">
-          <span class="link-type" @click="">{{ scope.row.email }}</span>
+          <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
       <el-table-column label="인스타그램" width="150">
         <template slot-scope="scope">
-          <span class="link-type" @click="">{{ scope.row.instagram }}</span>
+          <span>{{ scope.row.instagram }}</span>
         </template>
       </el-table-column>
       <el-table-column label="카테고리" width="150" align="center">
@@ -76,6 +76,7 @@
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <br><el-button v-if="scope.row.is_delete_requested" type="error" size="normal" >계정 삭제 요청</el-button>
+          <br><el-button type="warning" size="normal" @click="showAd(scope.row)">관련 광고</el-button>
 
         </template>
       </el-table-column>
@@ -310,7 +311,11 @@ export default {
     }
   },
   created() {
+    this.listQuery.id = this.$store.getters.sponser.id;
     this.getList()
+  },
+  destroyed() {
+    this.$store.commit('SET_SPONSER', {});
   },
   methods: {
     getStatus(filterAds){
@@ -447,6 +452,10 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    showAd(row) {
+      this.$store.commit('SET_AD', { 'sponser_id': row.id});
+      this.$router.push('/ad-table/ad-table')
     },
     updateData() {
       var token = this.$store.getters.token;

@@ -41,12 +41,12 @@
       </el-table-column>
       <el-table-column label="광고 ID" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
-          <span>{{ scope.row.ad_id }}</span>
+          <span class="link-type" @click="showAd(scope.row)">{{ scope.row.ad_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="인플루언서 ID" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
-          <span>{{ scope.row.influencer_id }}</span>
+          <span class="link-type" @click="showInfluencer(scope.row)">{{ scope.row.influencer_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="인플루언서" width="100">
@@ -56,12 +56,12 @@
       </el-table-column>
       <el-table-column label="인플루언서 이메일" width="150">
         <template slot-scope="scope">
-          <span class="link-type" @click="">{{ scope.row.email }}</span>
+          <span class="link-type" @click="showInfluencer(scope.row)">{{ scope.row.email }}</span>
         </template>
       </el-table-column>
       <el-table-column label="인플루언서 인스타그램" width="150">
         <template slot-scope="scope">
-          <span class="link-type" @click="">{{ scope.row.instagram }}</span>
+          <span class="link-type" @click="showInfluencer(scope.row)">{{ scope.row.instagram }}</span>
         </template>
       </el-table-column>
       <el-table-column label="진행 상태" class-name="status-col" width="150">
@@ -329,11 +329,12 @@ export default {
     }
   },
   created() {
-    this.listQuery.ad_id = this.$store.getters.ad.id;
+    this.listQuery.ad_id = this.$store.getters.ad_influencer.ad_id;
+    this.listQuery.influencer_id = this.$store.getters.ad_influencer.influencer_id;
     this.getList()
   },
   destroyed() {
-    this.$store.commit('SET_AD', {});
+    this.$store.commit('SET_AD_INFLUENCER', {});
   },
   methods: {
     getStatus(filterAds){
@@ -465,6 +466,14 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    showAd(row) {
+      this.$store.commit('SET_AD', { 'id': row.ad_id } );
+      this.$router.push('/ad-table/ad-table')
+    },
+    showInfluencer(row) {
+      this.$store.commit('SET_INFLUENCER', { 'id': row.influencer_id} );
+      this.$router.push('/influencer-table/influencer-table')
     },
     updateData() {
       var token = this.$store.getters.token;
