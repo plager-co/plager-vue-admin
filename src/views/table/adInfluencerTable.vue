@@ -66,7 +66,7 @@
       </el-table-column>
       <el-table-column label="진행 상태" class-name="status-col" width="150">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
+          <el-tag :type="scope.row.status_text | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="광고 비용" width="100" align="center">
@@ -200,9 +200,8 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        recommended: 'danger',
+        chosen: 'success',
       }
       return statusMap[status]
     },
