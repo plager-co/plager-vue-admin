@@ -80,9 +80,10 @@
           <span>{{ scope.row.created_at }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 인플루언서</el-button>
 
         </template>
       </el-table-column>
@@ -420,6 +421,12 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    showAdInfluencer(row) {
+      console.log("row");
+      console.log(row);
+      this.$store.commit('SET_AD', row);
+      this.$router.push('/ad-influencer-table/ad-influencer-table')
     },
     updateData() {
       var token = this.$store.getters.token;

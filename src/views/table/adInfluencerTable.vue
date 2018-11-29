@@ -330,7 +330,11 @@ export default {
     }
   },
   created() {
+    this.listQuery.ad_id = this.$store.getters.ad.id;
     this.getList()
+  },
+  destroyed() {
+    this.$store.commit('SET_AD', {});
   },
   methods: {
     getStatus(filterAds){

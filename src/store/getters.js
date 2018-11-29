@@ -14,6 +14,10 @@ const getters = {
   setting: state => state.user.setting,
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
-  errorLogs: state => state.errorLog.logs
+  errorLogs: state => state.errorLog.logs,
+  ad: state => state.app.ad,
+  ad_influencer: state => state.app.ad_influencer,
+  user: state => state.app.user,
+  tester: state => state.app.tester
 }
 export default getters

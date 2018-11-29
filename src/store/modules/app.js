@@ -8,9 +8,25 @@ const app = {
     },
     device: 'desktop',
     language: Cookies.get('language') || 'en',
-    size: Cookies.get('size') || 'medium'
+    size: Cookies.get('size') || 'medium',
+    ad: {},
+    ad_influencer: {},
+    user: {},
+    tester: {},
   },
   mutations: {
+    SET_AD: (state, data) => {
+      state.ad = data
+    },
+    SET_AD_INFLUENCER: (state, data) => {
+      state.ad_influencer = data
+    },
+    SET_USER: (state, data) => {
+      state.user = data
+    },
+    SET_TESTER: (state, id) => {
+      state.ad = data
+    },
     TOGGLE_SIDEBAR: state => {
       if (state.sidebar.opened) {
         Cookies.set('sidebarStatus', 1)
