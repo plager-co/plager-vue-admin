@@ -612,8 +612,8 @@ this.listQuery.id = this.$store.getters.influencer.id;
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', 'email', 'status_text', 'category', 'target_age', 'target_sex', 'created_at']
-        const filterVal = ['id', 'email', 'status_text', 'category', 'target_age', 'target_sex', 'created_at']
+        const tHeader = ['id', 'email', 'instagram', 'level', 'category', 'name', 'country', 'created_at', 'updated_at', 'gender', 'total_follower_count', 'total_post_count', 'total_like_count', 'total_comment_count', 'total_movie_count', 'total_play_count', 'influencer_cost', 'is_blocked', 'is_fake_instagram', 'influencer_effect_rate', 'total_paid', 'is_removed', 'is_delete_requested']
+        const filterVal = ['id', 'email', 'instagram', 'level', 'category', 'name', 'country', 'created_at', 'updated_at', 'gender', 'total_follower_count', 'total_post_count', 'total_like_count', 'total_comment_count', 'total_movie_count', 'total_play_count', 'influencer_cost', 'is_blocked', 'is_fake_instagram', 'influencer_effect_rate', 'total_paid', 'is_removed', 'is_delete_requested']
         const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,

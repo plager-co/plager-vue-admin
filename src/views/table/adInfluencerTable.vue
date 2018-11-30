@@ -681,8 +681,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', 'email', 'status_text', 'target_category', 'target_age', 'target_sex', 'created_at']
-        const filterVal = ['id', 'email', 'status_text', 'target_category', 'target_age', 'target_sex', 'created_at']
+        const tHeader = ['id', 'ad_id', 'influencer_id', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
+        const filterVal = ['id', 'ad_id', 'influencer_id', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
         const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,
