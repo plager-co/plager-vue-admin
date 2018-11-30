@@ -15,31 +15,31 @@ const tableRouter = {
     {
       path: 'ad-table',
       component: () => import('@/views/table/adTable'),
-      name: 'adTable',
+      name: 'currentAdTable',
       meta: { title: '광고' }
     },
     {
       path: 'ad-influencer-table',
       component: () => import('@/views/table/adInfluencerTable'),
-      name: 'adInfluencerTable',
+      name: 'currentAdInfluencerTable',
       meta: { title: '광고-인플루언서' }
     },
     {
       path: 'influencer-table',
       component: () => import('@/views/table/influencerTable'),
-      name: 'influencerTable',
+      name: 'currentInfluencerTable',
       meta: { title: '인플루언서' }
     },
     {
       path: 'sponser-table',
       component: () => import('@/views/table/sponserTable'),
-      name: 'sponserTable',
+      name: 'currentSponserTable',
       meta: { title: '스폰서' }
     },
     {
       path: 'tester-table',
       component: () => import('@/views/table/testerTable'),
-      name: 'testerTable',
+      name: 'currentTesterTable',
       meta: { title: '테스터' }
     }
   ]
