@@ -22,7 +22,7 @@
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
     </div>
     <div class="count" style="margin:20px;">
-          총: {{ total }} , 어제: {{ yesterday_total }} , 오늘: {{ today_total }}
+         매출액 총합 [ {{ sumPrice }} ]   ,  광고 진행자 수 [ 총 : {{ total }} , 어제: {{ yesterday_total }} , 오늘: {{ today_total }} ]
     </div>
 
     <el-table
@@ -181,6 +181,7 @@
 
 <script>
 import { updateAd } from '@/api/ad'
+import { fetchSumPrice } from '@/api/adInfluencer'
 import { fetchList, fetchPv, createAdInfluencer, updateAdInfluencer } from '@/api/adInfluencer'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
@@ -222,6 +223,7 @@ export default {
       yesterday_total: null,
       today_total: null,
       total: 0,
+      sumPrice: 0,
       listLoading: true,
       listQuery: {
         page: 1,
@@ -338,6 +340,7 @@ export default {
     this.listQuery.ad_id = this.$store.getters.ad_influencer.ad_id;
     this.listQuery.influencer_id = this.$store.getters.ad_influencer.influencer_id;
     this.getList()
+
   },
   methods: {
     getStatus(filterAds){
@@ -382,18 +385,25 @@ export default {
           }
           return statusAds;
       },
+    numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        console.log("response");
-        console.log(response);
         this.list = response.data.result
-        console.log("this.list");
-        console.log(this.list);
         this.total = response.data.count;
         this.yesterday_total = response.data.yesterday_count;
         this.today_total = response.data.today_count;
 
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+
+      fetchSumPrice(this.listQuery).then(response => {
+        this.sumPrice = this.numberWithCommas(response.data.result);
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false

@@ -15,7 +15,13 @@ export function fetchAdInfluencer(id) {
     params: { id }
   })
 }
-
+export function fetchSumPrice(query) {
+  return request({
+    url: '/ad_influencers/filter/4/',
+    method: 'get',
+    params: query
+  })
+}
 
 export function fetchPv(pv) {
   return request({
