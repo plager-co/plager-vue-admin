@@ -7,8 +7,8 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">현재 진행 SIM 서비스</div>
-          전일: <count-to :start-val="0" :end-val="3" :duration="2600" class="card-panel-num"/>
-          오늘: <count-to :start-val="0" :end-val="5" :duration="2600" class="card-panel-num"/>
+          전일: <count-to :start-val="0" :end-val="yesterday_started_ad_influencer" :duration="2600" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="today_started_ad_influencer" :duration="2600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -19,8 +19,8 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">신규 SIM 서비스 신청</div>
-          전일: <count-to :start-val="0" :end-val="2" :duration="3000" class="card-panel-num"/>
-          오늘: <count-to :start-val="0" :end-val="2" :duration="3000" class="card-panel-num"/>
+          전일: <count-to :start-val="0" :end-val="yesterday_ad" :duration="3000" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="today_ad" :duration="3000" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -31,8 +31,8 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">신규 등록 광고주</div>
-          전일: <count-to :start-val="0" :end-val="122" :duration="3200" class="card-panel-num"/>
-          오늘: <count-to :start-val="0" :end-val="23" :duration="3200" class="card-panel-num"/>
+          전일: <count-to :start-val="0" :end-val="yesterday_sponser" :duration="3200" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="today_sponser" :duration="3200" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -43,8 +43,8 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">신규 등록 인플루언서</div>
-          전일: <count-to :start-val="0" :end-val="23" :duration="3600" class="card-panel-num"/>
-          오늘: <count-to :start-val="0" :end-val="25" :duration="3600" class="card-panel-num"/>
+          전일: <count-to :start-val="0" :end-val="yesterday_influencer" :duration="3600" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="today_influencer" :duration="3600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -54,9 +54,9 @@
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">나의 영향력 테스트 수</div>
-          전일: <count-to :start-val="0" :end-val="35" :duration="3600" class="card-panel-num"/>
-          오늘: <count-to :start-val="0" :end-val="120" :duration="3600" class="card-panel-num"/>
+          <div class="card-panel-text">영향력 테스트 수</div>
+          전일: <count-to :start-val="0" :end-val="yesterday_tester" :duration="3600" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="today_tester" :duration="3600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -65,15 +65,59 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { fetchList as fetchAdList} from '@/api/ad'
+import { fetchList as fetchAdInfluencerList } from '@/api/adInfluencer'
+import { fetchList as fetchInfluencerList } from '@/api/influencer'
+import { fetchList as fetchSponserList } from '@/api/sponser'
+import { fetchList as fetchTesterList } from '@/api/tester'
 
 export default {
+  data() {
+    return {
+      today_ad: 0,
+      yesterday_ad: 0,
+      today_started_ad_influencer: 0,
+      yesterday_started_ad_influencer: 0,
+      today_influencer: 0,
+      yesterday_influencer: 0,
+      today_sponser: 0,
+      yesterday_sponser: 0,
+      today_tester: 0,
+      yesterday_tester: 0,
+    }
+  },
   components: {
     CountTo
+  },
+  created() {
+    this.getList()
   },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
-    }
+    },
+    getList() {
+      fetchAdList({}).then(response => {
+        this.yesterday_ad = response.data.yesterday_count;
+        this.today_ad = response.data.today_count;
+      });
+      fetchAdInfluencerList({'count_column': 'started_at' }).then(response => {
+        this.yesterday_started_ad_influencer = response.data.yesterday_count;
+        this.today_started_ad_influencer = response.data.today_count;
+      });
+      fetchInfluencerList({}).then(response => {
+        this.yesterday_influencer = response.data.yesterday_count;
+        this.today_influencer = response.data.today_count;
+      });
+      fetchSponserList({}).then(response => {
+        this.yesterday_sponser = response.data.yesterday_count;
+        this.today_sponser = response.data.today_count;
+      });
+      fetchTesterList({}).then(response => {
+        this.yesterday_tester = response.data.yesterday_count;
+        this.today_tester = response.data.today_count;
+      });
+    },
   }
 }
 </script>

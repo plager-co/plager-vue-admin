@@ -103,8 +103,8 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:100px;">
-        <el-form-item label="광고주 이메일" prop="email">
-          <el-input v-model="temp.email"/>
+        <el-form-item label="광고주 ID" prop="sponser_id">
+          <el-input v-model="temp.sponser_id"/>
         </el-form-item>
         <el-form-item label="카테고리">
           <el-select v-model="temp.target_category" class="filter-item" placeholder="Please select">
