@@ -28,6 +28,30 @@
 
 English | [简体中文](./README.zh-CN.md)
 
+## deploy (a.sh)
+
+kill $(ps aux |awk '/python/ {print $2}')
+kill $(ps aux |awk '/node/ {print $2}')
+cd ~/Projects/sim-web/
+pm2 start npm -- start
+cd ~/Projects/sim-api/
+nohup sudo python3 run.py > nohup_api.out &
+cd ~/Projects/sim-admin/
+pm2 start ecosystem.json
+cd ~/
+
+## pull
+
+cd ~/Projects/sim-web/
+git pull
+cd ~/Projects/sim-api/
+git pull
+cd ~/Projects/sim-admin/
+git pull
+cd
+. a.sh
+
+
 ## Introduction
 
 [vue-element-admin](http://panjiachen.github.io/vue-element-admin) is a front-end management background integration solution. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element](https://github.com/ElemeFE/element).
