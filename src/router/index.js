@@ -85,6 +85,19 @@ export default new Router({
 export const asyncRouterMap = [
   /** When your routing table is too long, you can split it into small modules**/
   {
+    path: '/sponser-images',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/sponser-images/index'),
+        name: 'Sponser-images',
+        meta: { title: '총 등록 광고주', icon: 'component', noCache: true }
+      }
+    ]
+  },
+
+  {
   path: '/ad-table',
   component: Layout,
   redirect: '/table/ad-table',
