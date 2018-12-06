@@ -32,7 +32,7 @@
       @sort-change="sortChange">
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.id }}</span>
+          <span class="link-type" @click="handleView(scope.row)">{{ scope.row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="인플루언서" width="100">
@@ -74,6 +74,60 @@
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogViewVisible">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="text-align: center; width: 400px; margin-left:100px;">
+        <img :src="temp.picture_link" :style="getBlockedCssView(temp.is_blocked)">
+        <br>@{{ temp.instagram }}
+        <br><h3>게시물 {{ numberWithCommas(temp.total_post_count) }} / 팔로워 {{ numberWithCommas(temp.total_follower_count) }}</h3>
+        <h2>영향력지수 : {{ Math.round(temp.influencer_effect_rate * 100) / 100 }} %</h2>
+        <h4>전체 인플루언서 평균 영향력 지수 : {{ Math.round(avg_influencer_effect_rate * 100) / 100 }} %</h4>
+
+        <div class="el-table__header-wrapper">
+          <table class="el-table__body" style="
+    width: 100%;
+     border-collapse: collapse;
+    font-size: 15px;
+">
+            <tbody>
+              <tr>
+              <th colspan="2" style="padding:10px; border: 3px solid #444444;">3달 평균 engagement</th>
+              </tr>
+              <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">게시물</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.total_post_count) }}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">좋아요</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.total_like_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">댓글</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.total_comment_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">동영상 수</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.total_movie_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">동영상 재생</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.total_play_count) }}</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+          <br><br>포지션: {{ temp.level }} 인플루언서
+          <h2>1회 포스팅 예상 모델료</h2>
+          <h3><b>약 {{ numberWithCommas(temp.price) }}원</b></h3>
+          <h5>위의 영향력 지수와 모델료는 간단한 몇 가지 항목으로 산출한 것으로 정확한 판단 기준이 되지는 못 합니다.</h5>
+        </div>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogViewVisible = false">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:100px;">
@@ -265,6 +319,7 @@ export default {
         influencer_cost: undefined,
       },
       dialogFormVisible: false,
+      dialogViewVisible: false,
       dialogStatus: '',
       textMap: {
         update: 'Edit',
@@ -277,11 +332,14 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+       avg_influencer_effect_rate: 0
     }
   },
-  created() {
+  async created() {
   this.listQuery.id = this.$store.getters.tester.id;
+    await this.$store.dispatch('avgInfluencerEffectRate');
+    this.avg_influencer_effect_rate = this.$store.getters.avg_influencer_effect_rate;
     this.getList()
   },
   methods: {
@@ -344,6 +402,34 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+    },
+    getShortYear(x) {
+          if (x){
+              return x.substring(2, 4);
+          } else {
+              return '00';
+          }
+    },
+    getYesOrNo(x) {
+          if (x){
+              return 'O';
+          } else {
+              return 'X';
+          }
+    },
+    numberWithCommas(x) {
+          if (x){
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else {
+              return 0;
+          }
+    },
+    getBlockedCssView(isBlocked) {
+      if (isBlocked === 1) {
+        return 'width: 50%; border: 5px solid red; border-radius: 50%;'
+      } else {
+        return 'width: 50%;  border-radius: 50%;'
+      }
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -440,6 +526,14 @@ export default {
             })
           })
         }
+      })
+    },
+    async handleView(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogViewVisible = true;
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
       })
     },
     handleDelete(row) {
