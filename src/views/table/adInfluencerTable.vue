@@ -337,6 +337,7 @@ export default {
     }
   },
   created() {
+    this.listQuery.id = this.$store.getters.ad_influencer.id;
     this.listQuery.ad_id = this.$store.getters.ad_influencer.ad_id;
     this.listQuery.influencer_id = this.$store.getters.ad_influencer.influencer_id;
     this.getList()

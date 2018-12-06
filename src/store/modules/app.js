@@ -14,6 +14,7 @@ const app = {
     influencer: {},
     sponser: {},
     tester: {},
+    influencer_ads: []
   },
   mutations: {
     SET_AD: (state, data) => {
@@ -55,7 +56,10 @@ const app = {
     SET_SIZE: (state, size) => {
       state.size = size
       Cookies.set('size', size)
-    }
+    },
+    SET_INFLUENCER_ADS: (state, data) => {
+      state.influencer_ads = data
+    },
   },
   actions: {
     toggleSideBar({ commit }) {

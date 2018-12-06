@@ -214,7 +214,8 @@
         <br><h3>게시물 {{ numberWithCommas(temp.total_post_count) }} / 팔로워 {{ numberWithCommas(temp.total_follower_count) }}</h3>
         <h2>영향력지수 : {{ Math.round(temp.influencer_effect_rate * 100) / 100 }} %</h2>
         <h4>전체 인플루언서 평균 영향력 지수 : {{ Math.round(avg_influencer_effect_rate * 100) / 100 }} %</h4>
-        <h4>진행중인 SIM 광고</h4>
+        <h3 v-if="temp.has_ad">진행중인 SIM 광고</h3>
+        <h4 v-for="item in temp.related_ads"><a @click="showAdInfluencerById(item)">{{ item.ad_id }}</a> ( {{ item.started_at }} )</h4>
 
         <div class="el-table__header-wrapper">
           <table class="el-table__body" style="
@@ -291,6 +292,7 @@
 </template>
 
 <script>
+import { fetchList as fetchAdInfluencerList } from '@/api/adInfluencer'
 import { fetchList, fetchPv, createInfluencer, updateInfluencer } from '@/api/influencer'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
@@ -443,6 +445,8 @@ export default {
         total_paid: undefined,
         is_removed: undefined,
         is_delete_requested: undefined,
+        has_ad: false,
+        related_ads: [],
       },
       dialogFormVisible: false,
       dialogViewVisible: false,
@@ -664,13 +668,25 @@ this.listQuery.id = this.$store.getters.influencer.id;
         this.$refs['dataForm'].clearValidate()
       })
     },
-    handleView(row) {
+    async handleView(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
+      await fetchAdInfluencerList({'influencer_id': row.id , 'status': 3 }).then(response => {
+        this.$store.commit('SET_INFLUENCER_ADS', response.data.result);
+      });
+      this.temp.related_ads = this.$store.getters.influencer_ads;
+      this.temp.has_ad = false;
+      if (this.temp.related_ads.length > 0){
+        this.temp.has_ad = true;
+      }
       this.dialogViewVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    showAdInfluencerById(row) {
+      this.$store.commit('SET_AD_INFLUENCER', { 'id': row.id});
+      this.$router.push('/table/ad-influencer-table')
     },
     showAdInfluencer(row) {
       this.$store.commit('SET_AD_INFLUENCER', { 'influencer_id': row.id});
