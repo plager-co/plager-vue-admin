@@ -213,9 +213,9 @@
         <br>@{{ temp.instagram }}
         <br><h3>게시물 {{ numberWithCommas(temp.total_post_count) }} / 팔로워 {{ numberWithCommas(temp.total_follower_count) }}</h3>
         <h2>영향력지수 : {{ Math.round(temp.influencer_effect_rate * 100) / 100 }} %</h2>
-        <h4>전체 인플루언서 평균 영향력 지수 : </h4>
+        <h4>전체 인플루언서 평균 영향력 지수 : {{ Math.round(avg_influencer_effect_rate * 100) / 100 }} %</h4>
         <h4>진행중인 SIM 광고</h4>
-        
+
         <div class="el-table__header-wrapper">
           <table class="el-table__body" style="
     width: 100%;
@@ -262,13 +262,13 @@
 
           </table>
           <h3>
-          <br>{{getShortYear(temp.birth)}} 년생, {{temp.gender}}
-          <br><br>관심사: {{temp.category}}
-          <br><br>포지션: {{temp.level}} 인플루언서
-          <br><br>부정프로그램사용여부: {{getYesOrNo(temp.is_fake_instagram)}}</h3>
+          <br>{{ getShortYear(temp.birth) }} 년생, {{ temp.gender }}
+          <br><br>관심사: {{ temp.category }}
+          <br><br>포지션: {{ temp.level }} 인플루언서
+          <br><br>부정프로그램사용여부: {{ getYesOrNo(temp.is_fake_instagram) }}</h3>
           <h5>부정 프로그램 사용시 광고주에게 추천되지 않습니다.</h5>
           <h2>1회 포스팅 예상 모델료</h2>
-          <h3><b>약 {{numberWithCommas(temp.price)}}원</b></h3>
+          <h3><b>약 {{ numberWithCommas(temp.price) }}원</b></h3>
         </div>
 
       </el-form>
@@ -458,12 +458,14 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      avg_influencer_effect_rate: 0
     }
   },
-  created() {
+  async created() {
         console.log("created")
-
+    await this.$store.dispatch('avgInfluencerEffectRate');
+    this.avg_influencer_effect_rate = this.$store.getters.avg_influencer_effect_rate;
     this.listQuery.id = this.$store.getters.influencer.id;
     this.listQuery.category = this.$store.getters.influencer.category;
     this.getList()

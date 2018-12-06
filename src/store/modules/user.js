@@ -1,4 +1,5 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { avgInfluencerEffectRate } from '@/api/influencer'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -13,7 +14,8 @@ const user = {
     roles: [],
     setting: {
       articlePlatform: []
-    }
+    },
+    avg_influencer_effect_rate: 0
   },
 
   mutations: {
@@ -40,6 +42,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    setAvgInfluencerEffectRate: (state, rate) => {
+      state.avg_influencer_effect_rate = rate
     }
   },
 
@@ -85,7 +90,20 @@ const user = {
         })
       })
     },
+    avgInfluencerEffectRate (context, userData) {
+            const result = avgInfluencerEffectRate(userData)
+              .then(
+                  function (response) {
+                            if(response.data.result){
+                                context.commit('setAvgInfluencerEffectRate', response.data.result);
+                            }
+                        }
+            ).catch(e => {
+              context.commit('errorLoginPopup');
+            });
+            return result
 
+          },
     // 第三方验证登录
     // LoginByThirdparty({ commit, state }, code) {
     //   return new Promise((resolve, reject) => {

@@ -48,3 +48,10 @@ export function updateInfluencer(data, token) {
     data
   })
 }
+
+export function avgInfluencerEffectRate() {
+  return request({
+    url: '/users/filters/2/',
+    method: 'get',
+  })
+}
