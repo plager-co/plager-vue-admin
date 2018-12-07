@@ -4,6 +4,7 @@
       <el-input v-model="listQuery.id" placeholder="ID" style="width: 50px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.ad_id" placeholder="광고 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.influencer_id" placeholder="인플루언서 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.hashtag" placeholder="해쉬태그" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.email" placeholder="인플루언서 Email" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.instagram" placeholder="인플루언서 인스타그램" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
@@ -47,6 +48,11 @@
       <el-table-column label="인플루언서 ID" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
           <span class="link-type" @click="showInfluencer(scope.row)">{{ scope.row.influencer_id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="해쉬태그" prop="id" sortable="custom" align="center" width="65">
+        <template slot-scope="scope">
+          <span>{{ scope.row.hashtag }}</span>
         </template>
       </el-table-column>
       <el-table-column label="인플루언서" width="100">
@@ -116,6 +122,9 @@
         </el-form-item>
         <el-form-item label="인플루언서 ID" prop="email">
           <el-input v-model="temp.influencer_id"/>
+        </el-form-item>
+        <el-form-item label="해쉬태그" prop="email">
+          <el-input v-model="temp.hashtag"/>
         </el-form-item>
         <el-form-item label="상태">
           <el-select v-model="temp.status_text" class="filter-item" placeholder="Please select">
@@ -231,6 +240,7 @@ export default {
         id: undefined,
         ad_id: undefined,
         influencer_id: undefined,
+        hashtag: undefined,
         email: undefined,
         instagram: undefined,
         picture_link: undefined,
@@ -290,6 +300,7 @@ export default {
         type: '',
         ad_id: undefined,
         influencer_id: undefined,
+        hashtag: undefined,
         email: undefined,
         instagram: undefined,
         picture_link: undefined,
@@ -692,8 +703,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', 'ad_id', 'influencer_id', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
-        const filterVal = ['id', 'ad_id', 'influencer_id', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
+        const tHeader = ['id', 'ad_id', 'influencer_id', 'hashtag', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
+        const filterVal = ['id', 'ad_id', 'influencer_id', 'hashtag', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
         const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,
