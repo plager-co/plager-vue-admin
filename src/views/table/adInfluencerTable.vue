@@ -19,7 +19,7 @@
       <el-input v-model="listQuery.max_created_at" placeholder="ex)181212" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
+      <el-button v-if="user_type === 'admin'" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
     </div>
     <div class="count" style="margin:20px;">
@@ -100,7 +100,7 @@
           <span>{{ scope.row.target_movie_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
+      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <br v-if="scope.row.status_text === 'recommended'"><el-button v-if="scope.row.status_text === 'recommended'" type="error" size="mini" @click="reviewAd(scope.row)">플래거 추천</el-button>
@@ -115,7 +115,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog v-if="user_type === 'admin'" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:100px;">
         <el-form-item label="광고 ID" prop="email">
           <el-input v-model="temp.ad_id"/>
@@ -228,6 +228,7 @@ export default {
   data() {
     return {
       tableKey: 0,
+      user_type: null,
       list: null,
       yesterday_total: null,
       today_total: null,
@@ -348,6 +349,7 @@ export default {
     }
   },
   created() {
+    this.user_type = this.$store.getters.user_type;
     this.listQuery.id = this.$store.getters.ad_influencer.id;
     this.listQuery.ad_id = this.$store.getters.ad_influencer.ad_id;
     this.listQuery.influencer_id = this.$store.getters.ad_influencer.influencer_id;
