@@ -19,6 +19,8 @@ const getters = {
   ad_influencer: state => state.app.ad_influencer,
   influencer: state => state.app.influencer,
   sponser: state => state.app.sponser,
-  tester: state => state.app.tester
+  tester: state => state.app.tester,
+  avg_influencer_effect_rate: state => state.user.avg_influencer_effect_rate,
+  influencer_ads: state => state.app.influencer_ads
 }
 export default getters

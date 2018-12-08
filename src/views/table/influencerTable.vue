@@ -34,7 +34,7 @@
       @sort-change="sortChange">
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.id }}</span>
+          <span class="link-type" @click="handleView(scope.row)">{{ scope.row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="인플루언서" width="100">
@@ -207,6 +207,77 @@
       </div>
     </el-dialog>
 
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogViewVisible">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="text-align: center; width: 400px; margin-left:100px;">
+        <img :src="temp.picture_link" :style="getBlockedCssView(temp.is_blocked)">
+        <br>@{{ temp.instagram }}
+        <br><h3>게시물 {{ numberWithCommas(temp.total_post_count) }} / 팔로워 {{ numberWithCommas(temp.total_follower_count) }}</h3>
+        <h2>영향력지수 : {{ Math.round(temp.influencer_effect_rate * 100) / 100 }} %</h2>
+        <h4>전체 인플루언서 평균 영향력 지수 : {{ Math.round(avg_influencer_effect_rate * 100) / 100 }} %</h4>
+        <h3 v-if="temp.has_ad">진행중인 SIM 광고</h3>
+        <h4 v-for="item in temp.related_ads"><a @click="showAdInfluencerById(item)">{{ item.ad_id }}</a> ( {{ item.started_at }} )</h4>
+
+        <div class="el-table__header-wrapper">
+          <table class="el-table__body" style="
+    width: 100%;
+     border-collapse: collapse;
+    font-size: 15px;
+">
+            <tbody>
+              <tr>
+              <th colspan="2" style="padding:10px; border: 3px solid #444444;">3달 평균 engagement</th>
+              </tr>
+              <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">라이크</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.three_month_like_count) }}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">댓글</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.three_month_comment_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">내 댓글</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.three_month_influencer_comment_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">게시물 수</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.three_month_post_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">동영상 수</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.three_month_movie_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">동영상 재생</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.three_month_play_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">부정워딩 수</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.three_month_negative_comment_count) }}</td>
+              </tr>
+            <tr>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">제품문의 수</td>
+                <td style="padding:10px; border: 3px solid #444444; background-color:white;">{{ numberWithCommas(temp.three_month_inquiry_comment_count) }}</td>
+              </tr>
+            </tbody>
+
+          </table>
+          <h3>
+          <br>{{ getShortYear(temp.birth) }} 년생, {{ temp.gender }}
+          <br><br>관심사: {{ temp.category }}
+          <br><br>포지션: {{ temp.level }} 인플루언서
+          <br><br>부정프로그램사용여부: {{ getYesOrNo(temp.is_fake_instagram) }}</h3>
+          <h5>부정 프로그램 사용시 광고주에게 추천되지 않습니다.</h5>
+          <h2>1회 포스팅 예상 모델료</h2>
+          <h3><b>약 {{ numberWithCommas(temp.price) }}원</b></h3>
+        </div>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogFormVisible = false">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
     <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
       <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="Channel"/>
@@ -221,6 +292,7 @@
 </template>
 
 <script>
+import { fetchList as fetchAdInfluencerList } from '@/api/adInfluencer'
 import { fetchList, fetchPv, createInfluencer, updateInfluencer } from '@/api/influencer'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
@@ -373,8 +445,11 @@ export default {
         total_paid: undefined,
         is_removed: undefined,
         is_delete_requested: undefined,
+        has_ad: false,
+        related_ads: [],
       },
       dialogFormVisible: false,
+      dialogViewVisible: false,
       dialogStatus: '',
       textMap: {
         update: 'Edit',
@@ -387,12 +462,14 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      avg_influencer_effect_rate: 0
     }
   },
-  created() {
+  async created() {
         console.log("created")
-
+    await this.$store.dispatch('avgInfluencerEffectRate');
+    this.avg_influencer_effect_rate = this.$store.getters.avg_influencer_effect_rate;
     this.listQuery.id = this.$store.getters.influencer.id;
     this.listQuery.category = this.$store.getters.influencer.category;
     this.getList()
@@ -421,11 +498,39 @@ this.listQuery.id = this.$store.getters.influencer.id;
   },
 
   methods: {
+    getShortYear(x) {
+          if (x){
+              return x.substring(2, 4);
+          } else {
+              return '00';
+          }
+    },
+    getYesOrNo(x) {
+          if (x){
+              return 'O';
+          } else {
+              return 'X';
+          }
+    },
+    numberWithCommas(x) {
+          if (x){
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else {
+              return 0;
+          }
+    },
     getBlockedCss(isBlocked) {
       if (isBlocked === 1) {
-        return 'width: 100%; border: 5px solid red;'
+        return 'width: 100%; border: 5px solid red;  border-radius: 50%;'
       } else {
-        return 'width: 100%; '
+        return 'width: 100%;  border-radius: 50%;'
+      }
+    },
+    getBlockedCssView(isBlocked) {
+      if (isBlocked === 1) {
+        return 'width: 50%; border: 5px solid red; border-radius: 50%;'
+      } else {
+        return 'width: 50%;  border-radius: 50%;'
       }
     },
     getStatus(filterAds){
@@ -562,6 +667,26 @@ this.listQuery.id = this.$store.getters.influencer.id;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    async handleView(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp)
+      await fetchAdInfluencerList({'influencer_id': row.id , 'status': 3 }).then(response => {
+        this.$store.commit('SET_INFLUENCER_ADS', response.data.result);
+      });
+      this.temp.related_ads = this.$store.getters.influencer_ads;
+      this.temp.has_ad = false;
+      if (this.temp.related_ads.length > 0){
+        this.temp.has_ad = true;
+      }
+      this.dialogViewVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    showAdInfluencerById(row) {
+      this.$store.commit('SET_AD_INFLUENCER', { 'id': row.id});
+      this.$router.push('/table/ad-influencer-table')
     },
     showAdInfluencer(row) {
       this.$store.commit('SET_AD_INFLUENCER', { 'influencer_id': row.id});
