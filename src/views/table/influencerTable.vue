@@ -16,7 +16,7 @@
       <el-input v-model="listQuery.max_created_at" placeholder="ex)181212" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
+      <el-button v-if="user_type === 'admin'" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
     </div>
     <div class="count" style="margin:20px;">
@@ -110,7 +110,7 @@
 
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 광고</el-button>
@@ -121,7 +121,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog v-if="user_type === 'admin'" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:100px;">
         <el-form-item label="Email" prop="email">
           <el-input v-model="temp.email"/>
@@ -332,6 +332,7 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      user_type: null,
       yesterday_total: null,
       today_total: null,
       total: 0,
@@ -473,6 +474,7 @@ export default {
     this.listQuery.id = this.$store.getters.influencer.id;
     this.listQuery.category = this.$store.getters.influencer.category;
     this.getList()
+    this.user_type = this.$store.getters.user_type;
     if (this.$store.getters.influencer.sort){
       this.listQuery.sort = this.$store.getters.influencer.sort;
 

@@ -5,6 +5,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 const user = {
   state: {
     user: '',
+    user_type: '',
     status: '',
     code: '',
     token: getToken(),
@@ -43,6 +44,9 @@ const user = {
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
+    SET_USER_TYPE: (state, roles) => {
+      state.user_type = roles
+    },
     setAvgInfluencerEffectRate: (state, rate) => {
       state.avg_influencer_effect_rate = rate
     }
@@ -57,7 +61,8 @@ const user = {
           const data = response.data
           console.log('response');
           console.log(response);
-          commit('SET_TOKEN', data.token)
+          commit('SET_TOKEN', data.token);
+          commit('SET_USER_TYPE', data.user_type);
           setToken(response.data.token)
           resolve()
         }).catch(error => {

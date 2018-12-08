@@ -14,7 +14,7 @@
       <el-input v-model="listQuery.max_created_at" placeholder="ex)181212" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
+      <el-button v-if="user_type === 'admin'" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
     </div>
     <div class="count" style="margin:20px;">
@@ -65,7 +65,7 @@
           <span>{{ scope.row.total_movie_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
+      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
 
@@ -75,7 +75,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogViewVisible">
+    <el-dialog v-if="user_type === 'admin'" :title="textMap[dialogStatus]" :visible.sync="dialogViewVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="text-align: center; width: 400px; margin-left:100px;">
         <img :src="temp.picture_link" :style="getBlockedCssView(temp.is_blocked)">
         <br>@{{ temp.instagram }}
@@ -234,6 +234,7 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      user_type: null,
       yesterday_total: null,
       today_total: null,
       total: 0,
@@ -341,6 +342,7 @@ export default {
     await this.$store.dispatch('avgInfluencerEffectRate');
     this.avg_influencer_effect_rate = this.$store.getters.avg_influencer_effect_rate;
     this.getList()
+    this.user_type = this.$store.getters.user_type;
   },
   methods: {
     getStatus(filterAds){
