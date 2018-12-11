@@ -65,7 +65,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error) // for debug
     Message({
-      message: error.message,
+      message: '다시 로그인 시도해주세요.',
       type: 'error',
       duration: 5 * 1000
     })

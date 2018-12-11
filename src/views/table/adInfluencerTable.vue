@@ -75,6 +75,18 @@
           <el-tag :type="scope.row.status_text | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
         </template>
       </el-table-column>
+
+      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <br v-if="scope.row.status_text === 'recommended'"><el-button v-if="scope.row.status_text === 'recommended'" type="error" size="mini" @click="reviewAd(scope.row)">플래거 추천</el-button>
+          <br v-if="scope.row.status_text === 'chosen'"><el-button v-if="scope.row.status_text === 'chosen'" type="error" size="mini" @click="paidAd(scope.row)">결재 확인</el-button>
+          <br v-if="scope.row.status_text === 'paid'"><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
+          <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
+          <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
+
+        </template>
+      </el-table-column>
       <el-table-column label="광고 비용" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.price }}</span>
@@ -85,30 +97,19 @@
           <span>{{ scope.row.paid_month }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 Like 수" width="100" align="center">
+      <el-table-column label="Like 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_like_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 Post 수" width="100" align="center">
+      <el-table-column label="Post 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_post_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 동영상 수" width="100" align="center">
+      <el-table-column label="동영상 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_movie_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <br v-if="scope.row.status_text === 'recommended'"><el-button v-if="scope.row.status_text === 'recommended'" type="error" size="mini" @click="reviewAd(scope.row)">플래거 추천</el-button>
-          <br v-if="scope.row.status_text === 'chosen'"><el-button v-if="scope.row.status_text === 'chosen'" type="error" size="mini" @click="paidAd(scope.row)">결재 확인</el-button>
-          <br v-if="scope.row.status_text === 'paid'"><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
-          <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
-          <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
-
         </template>
       </el-table-column>
     </el-table>
@@ -140,31 +141,31 @@
         <el-form-item label="지급 개월">
           <el-input v-model="temp.paid_month"/>
         </el-form-item>
-        <el-form-item label="목표 노출 수">
+        <el-form-item label="노출 수">
           <el-input v-model="temp.target_impression_count"/>
         </el-form-item>
-        <el-form-item label="목표 도달 수">
+        <el-form-item label="도달 수">
           <el-input v-model="temp.target_reach_count"/>
         </el-form-item>
-        <el-form-item label="목표 포스트 수">
+        <el-form-item label="포스트 수">
           <el-input v-model="temp.target_post_count"/>
         </el-form-item>
-        <el-form-item label="목표 좋아요 수">
+        <el-form-item label="좋아요 수">
           <el-input v-model="temp.target_like_count"/>
         </el-form-item>
-        <el-form-item label="목표 댓글 수">
+        <el-form-item label="댓글 수">
           <el-input v-model="temp.target_comment_count"/>
         </el-form-item>
-        <el-form-item label="목표 저장 수">
+        <el-form-item label="저장 수">
           <el-input v-model="temp.target_save_count"/>
         </el-form-item>
-        <el-form-item label="목표 동영상 수">
+        <el-form-item label="동영상 수">
           <el-input v-model="temp.target_movie_count"/>
         </el-form-item>
-        <el-form-item label="목표 재생 수">
+        <el-form-item label="재생 수">
           <el-input v-model="temp.target_play_count"/>
         </el-form-item>
-        <el-form-item label="목표 인바운드 수">
+        <el-form-item label="인바운드 수">
           <el-input v-model="temp.target_inbound_count"/>
         </el-form-item>
 
