@@ -97,17 +97,17 @@
           <span>{{ scope.row.paid_month }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 Like 수" width="100" align="center">
+      <el-table-column label="Like 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_like_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 Post 수" width="100" align="center">
+      <el-table-column label="Post 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_post_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="목표 동영상 수" width="100" align="center">
+      <el-table-column label="동영상 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_movie_count }}</span>
         </template>
@@ -141,31 +141,31 @@
         <el-form-item label="지급 개월">
           <el-input v-model="temp.paid_month"/>
         </el-form-item>
-        <el-form-item label="목표 노출 수">
+        <el-form-item label="노출 수">
           <el-input v-model="temp.target_impression_count"/>
         </el-form-item>
-        <el-form-item label="목표 도달 수">
+        <el-form-item label="도달 수">
           <el-input v-model="temp.target_reach_count"/>
         </el-form-item>
-        <el-form-item label="목표 포스트 수">
+        <el-form-item label="포스트 수">
           <el-input v-model="temp.target_post_count"/>
         </el-form-item>
-        <el-form-item label="목표 좋아요 수">
+        <el-form-item label="좋아요 수">
           <el-input v-model="temp.target_like_count"/>
         </el-form-item>
-        <el-form-item label="목표 댓글 수">
+        <el-form-item label="댓글 수">
           <el-input v-model="temp.target_comment_count"/>
         </el-form-item>
-        <el-form-item label="목표 저장 수">
+        <el-form-item label="저장 수">
           <el-input v-model="temp.target_save_count"/>
         </el-form-item>
-        <el-form-item label="목표 동영상 수">
+        <el-form-item label="동영상 수">
           <el-input v-model="temp.target_movie_count"/>
         </el-form-item>
-        <el-form-item label="목표 재생 수">
+        <el-form-item label="재생 수">
           <el-input v-model="temp.target_play_count"/>
         </el-form-item>
-        <el-form-item label="목표 인바운드 수">
+        <el-form-item label="인바운드 수">
           <el-input v-model="temp.target_inbound_count"/>
         </el-form-item>
 
