@@ -45,7 +45,7 @@ export default {
     adTable: 'Ad Table',
     adInfluencerTable: 'Ad - Influencer Table',
     influencerTable: 'Influencer Table',
-    sponserTable: 'Sponser Table',
+    sponsorTable: 'Sponsor Table',
     testerTable: 'Tester Table',
     treeTable: 'Tree Table',
     customTreeTable: 'Custom TreeTable',

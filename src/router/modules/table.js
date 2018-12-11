@@ -31,9 +31,9 @@ const tableRouter = {
       meta: { title: '인플루언서' }
     },
     {
-      path: 'sponser-table',
-      component: () => import('@/views/table/sponserTable'),
-      name: 'currentSponserTable',
+      path: 'sponsor-table',
+      component: () => import('@/views/table/sponsorTable'),
+      name: 'currentSponsorTable',
       meta: { title: '스폰서' }
     },
     {

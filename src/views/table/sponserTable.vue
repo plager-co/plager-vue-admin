@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createSponser, updateSponser } from '@/api/sponser'
+import { fetchList, fetchPv, createSponsor, updateSponsor } from '@/api/sponsor'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -189,7 +189,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'SponserTable',
+  name: 'SponsorTable',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -317,7 +317,7 @@ export default {
     }
   },
   created() {
-    this.listQuery.id = this.$store.getters.sponser.id;
+    this.listQuery.id = this.$store.getters.sponsor.id;
     this.getList()
     this.user_type = this.$store.getters.user_type;
   },
@@ -430,12 +430,12 @@ export default {
       this.temp.status = this.getStatusNum(this.temp.status_text);
       this.temp.created_at = new Date().toISOString().slice(0,10);
       this.temp.updated_at = new Date().toISOString().slice(0,10);
-      this.temp.user_type = 'sponser';
+      this.temp.user_type = 'sponsor';
       console.log("this.temp.created_at");
       console.log(this.temp.created_at);
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createSponser(this.temp, token).then(() => {
+          createSponsor(this.temp, token).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -458,7 +458,7 @@ export default {
       })
     },
     showAd(row) {
-      this.$store.commit('SET_AD', { 'sponser_id': row.id});
+      this.$store.commit('SET_AD', { 'sponsor_id': row.id});
       this.$router.push('/table/ad-table')
     },
     updateData() {
@@ -468,7 +468,7 @@ export default {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           this.temp.status = this.getStatusNum(this.temp.status_text);
-          updateSponser(tempData, token).then(() => {
+          updateSponsor(tempData, token).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
