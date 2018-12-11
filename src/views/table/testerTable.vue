@@ -50,6 +50,12 @@
           <span class="link-type" @click="">{{ scope.row.instagram }}</span>
         </template>
       </el-table-column>
+      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+
+        </template>
+      </el-table-column>
       <el-table-column label="총 Like 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.total_like_count }}</span>
@@ -63,12 +69,6 @@
       <el-table-column label="총 동영상 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.total_movie_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="100" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-
         </template>
       </el-table-column>
     </el-table>

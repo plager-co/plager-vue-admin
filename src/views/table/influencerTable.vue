@@ -62,6 +62,13 @@
           <span>{{ scope.row.level }}</span>
         </template>
       </el-table-column>
+      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 광고</el-button>
+
+        </template>
+      </el-table-column>
       <el-table-column label="카테고리" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.category }}</span>
@@ -107,13 +114,6 @@
           <el-button v-if="scope.row.is_blocked" type="error" size="normal" >블랙리스트</el-button>
           <br><el-button v-if="scope.row.is_fake_instagram" type="warning" size="normal" >가짜 인플루언서</el-button>
           <br><el-button v-if="scope.row.is_delete_requested" type="error" size="normal" >계정 삭제 요청</el-button>
-
-        </template>
-      </el-table-column>
-      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 광고</el-button>
 
         </template>
       </el-table-column>

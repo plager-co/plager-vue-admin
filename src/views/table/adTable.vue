@@ -65,6 +65,19 @@
           <el-tag :type="scope.row.status_text | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
         </template>
       </el-table-column>
+
+      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 인플루언서</el-button>
+          <br v-if="scope.row.status_text === 'registered'" ><el-button v-if="scope.row.status_text === 'registered'" type="error" size="mini" @click="reviewAd(scope.row)">검토 완료</el-button>
+          <br v-if="scope.row.status_text === 'reviewed'" ><el-button v-if="scope.row.status_text === 'reviewed'" type="error" size="mini" @click="paidAd(scope.row)">결재 확인</el-button>
+          <br v-if="scope.row.status_text === 'paid'" ><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
+          <br v-if="scope.row.status_text === 'started'" ><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
+          <br v-if="scope.row.status_text === 'started'" ><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
+
+        </template>
+      </el-table-column>
       <el-table-column label="카테고리" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_category }}</span>
@@ -83,18 +96,6 @@
       <el-table-column label="등록 날짜" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.created_at }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 인플루언서</el-button>
-          <br v-if="scope.row.status_text === 'registered'" ><el-button v-if="scope.row.status_text === 'registered'" type="error" size="mini" @click="reviewAd(scope.row)">검토 완료</el-button>
-          <br v-if="scope.row.status_text === 'reviewed'" ><el-button v-if="scope.row.status_text === 'reviewed'" type="error" size="mini" @click="paidAd(scope.row)">결재 확인</el-button>
-          <br v-if="scope.row.status_text === 'paid'" ><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
-          <br v-if="scope.row.status_text === 'started'" ><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
-          <br v-if="scope.row.status_text === 'started'" ><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
-
         </template>
       </el-table-column>
     </el-table>
