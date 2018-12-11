@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
 
-  query.user_type = 'sponser';
+  query.user_type = 'sponsor';
   query.is_removed = 0;
 
   return request({
@@ -12,7 +12,7 @@ export function fetchList(query) {
   })
 }
 
-export function fetchSponser(id) {
+export function fetchSponsor(id) {
   return request({
     url: '/users/' + id,
     method: 'get',
@@ -29,7 +29,7 @@ export function fetchPv(pv) {
   })
 }
 
-export function createSponser(data, token) {
+export function createSponsor(data, token) {
   return request({
     url: '/admin/users/',
     method: 'post',
@@ -38,7 +38,7 @@ export function createSponser(data, token) {
   })
 }
 
-export function updateSponser(data, token) {
+export function updateSponsor(data, token) {
 
 
   return request({

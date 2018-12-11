@@ -15,7 +15,7 @@
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"/>
       </el-select>
-      <el-input v-model="listQuery.sponser_id" placeholder="광고주 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.sponsor_id" placeholder="광고주 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.email" placeholder="광고주 이메일" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
       등록 날짜:
@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="광고주 ID" width="100">
         <template slot-scope="scope">
-          <span class="link-type" @click="showSponser(scope.row)">{{ scope.row.sponser_id }}</span>
+          <span class="link-type" @click="showSponsor(scope.row)">{{ scope.row.sponsor_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="광고주" width="100">
@@ -57,7 +57,7 @@
       </el-table-column>
       <el-table-column label="광고주 이메일" width="150">
         <template slot-scope="scope">
-          <span class="link-type" @click="showSponser(scope.row)">{{ scope.row.email }}</span>
+          <span class="link-type" @click="showSponsor(scope.row)">{{ scope.row.email }}</span>
         </template>
       </el-table-column>
       <el-table-column label="진행 상태" class-name="status-col" width="150">
@@ -104,8 +104,8 @@
 
     <el-dialog v-if="user_type === 'admin'" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:100px;">
-        <el-form-item label="광고주 ID" prop="sponser_id">
-          <el-input v-model="temp.sponser_id"/>
+        <el-form-item label="광고주 ID" prop="sponsor_id">
+          <el-input v-model="temp.sponsor_id"/>
         </el-form-item>
         <el-form-item label="카테고리">
           <el-select v-model="temp.target_category" class="filter-item" placeholder="Please select">
@@ -213,7 +213,7 @@ export default {
         page: 1,
         limit: 20,
         id: undefined,
-        sponser_id: undefined,
+        sponsor_id: undefined,
         email: undefined,
         picture_link: undefined,
         status: undefined,
@@ -274,7 +274,7 @@ export default {
         timestamp: new Date(),
         title: '',
         type: '',
-        sponser_id: undefined,
+        sponsor_id: undefined,
         email: undefined,
         picture_link: undefined,
         status: undefined,
@@ -307,7 +307,7 @@ export default {
   created() {
     this.user_type = this.$store.getters.user_type;
     this.listQuery.id = this.$store.getters.ad.id;
-    this.listQuery.sponser_id = this.$store.getters.ad.sponser_id;
+    this.listQuery.sponsor_id = this.$store.getters.ad.sponsor_id;
     console.log("this.listQuery");
     console.log(this.listQuery);
     this.getList()
@@ -443,9 +443,9 @@ export default {
       this.$store.commit('SET_AD_INFLUENCER', { 'ad_id': row.id });
       this.$router.push('/table/ad-influencer-table')
     },
-    showSponser(row) {
-      this.$store.commit('SET_SPONSER', { 'id': row.sponser_id });
-      this.$router.push('/table/sponser-table')
+    showSponsor(row) {
+      this.$store.commit('SET_SPONSER', { 'id': row.sponsor_id });
+      this.$router.push('/table/sponsor-table')
     },
     updateData() {
       var token = this.$store.getters.token;
@@ -639,8 +639,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', 'sponser_id', 'email', 'status_text', 'target_category', 'target_age', 'target_sex', 'required_influencer_follower', 'period', 'budget', 'created_at']
-        const filterVal = ['id', 'sponser_id', 'email', 'status_text', 'target_category', 'target_age', 'target_sex', 'required_influencer_follower', 'period', 'budget', 'created_at']
+        const tHeader = ['id', 'sponsor_id', 'email', 'status_text', 'target_category', 'target_age', 'target_sex', 'required_influencer_follower', 'period', 'budget', 'created_at']
+        const filterVal = ['id', 'sponsor_id', 'email', 'status_text', 'target_category', 'target_age', 'target_sex', 'required_influencer_follower', 'period', 'budget', 'created_at']
         const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,

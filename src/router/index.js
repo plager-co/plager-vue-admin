@@ -85,13 +85,13 @@ export default new Router({
 export const asyncRouterMap = [
   /** When your routing table is too long, you can split it into small modules**/
   {
-    path: '/sponser-images',
+    path: '/sponsor-images',
     component: Layout,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/sponser-images/index'),
-        name: 'Sponser-images',
+        component: () => import('@/views/sponsor-images/index'),
+        name: 'Sponsor-images',
         meta: { title: '총 등록 광고주', icon: 'component', noCache: true }
       }
     ]
@@ -164,19 +164,19 @@ export const asyncRouterMap = [
   ]
 },
   {
-  path: '/sponser-table',
+  path: '/sponsor-table',
   component: Layout,
-  redirect: '/table/sponser-table',
-  name: 'SponserTable',
+  redirect: '/table/sponsor-table',
+  name: 'SponsorTable',
   meta: {
-    title: 'SponserTable',
+    title: 'SponsorTable',
     icon: 'table'
   },
   children: [
     {
-      path: 'sponser-table',
-      component: () => import('@/views/table/sponserTable'),
-      name: 'sponserTable',
+      path: 'sponsor-table',
+      component: () => import('@/views/table/sponsorTable'),
+      name: 'sponsorTable',
       meta: { title: '스폰서' },
       beforeEnter(to, from, next) {
         store.commit('SET_SPONSER', { } );

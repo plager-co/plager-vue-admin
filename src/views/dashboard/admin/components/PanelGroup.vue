@@ -31,8 +31,8 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">신규 등록 광고주</div>
-          전일: <count-to :start-val="0" :end-val="yesterday_sponser" :duration="3200" class="card-panel-num"/>
-          오늘: <count-to :start-val="0" :end-val="today_sponser" :duration="3200" class="card-panel-num"/>
+          전일: <count-to :start-val="0" :end-val="yesterday_sponsor" :duration="3200" class="card-panel-num"/>
+          오늘: <count-to :start-val="0" :end-val="today_sponsor" :duration="3200" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -68,7 +68,7 @@ import CountTo from 'vue-count-to'
 import { fetchList as fetchAdList} from '@/api/ad'
 import { fetchList as fetchAdInfluencerList } from '@/api/adInfluencer'
 import { fetchList as fetchInfluencerList } from '@/api/influencer'
-import { fetchList as fetchSponserList } from '@/api/sponser'
+import { fetchList as fetchSponsorList } from '@/api/sponsor'
 import { fetchList as fetchTesterList } from '@/api/tester'
 
 export default {
@@ -80,8 +80,8 @@ export default {
       yesterday_started_ad_influencer: 0,
       today_influencer: 0,
       yesterday_influencer: 0,
-      today_sponser: 0,
-      yesterday_sponser: 0,
+      today_sponsor: 0,
+      yesterday_sponsor: 0,
       today_tester: 0,
       yesterday_tester: 0,
     }
@@ -109,9 +109,9 @@ export default {
         this.yesterday_influencer = response.data.yesterday_count;
         this.today_influencer = response.data.today_count;
       });
-      fetchSponserList({}).then(response => {
-        this.yesterday_sponser = response.data.yesterday_count;
-        this.today_sponser = response.data.today_count;
+      fetchSponsorList({}).then(response => {
+        this.yesterday_sponsor = response.data.yesterday_count;
+        this.today_sponsor = response.data.today_count;
       });
       fetchTesterList({}).then(response => {
         this.yesterday_tester = response.data.yesterday_count;

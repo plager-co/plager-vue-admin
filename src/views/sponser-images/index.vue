@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/sponser'
+import { fetchList } from '@/api/sponsor'
 
 export default {
   name: 'Icons',
@@ -31,7 +31,7 @@ export default {
         page: 1,
         limit: 1000,
         id: undefined,
-        sponser_id: undefined,
+        sponsor_id: undefined,
         email: undefined,
         picture_link: undefined,
         instagram: undefined,
@@ -68,7 +68,7 @@ export default {
       })
     },
     showAd(row) {
-      this.$store.commit('SET_AD', { 'sponser_id': row.id});
+      this.$store.commit('SET_AD', { 'sponsor_id': row.id});
       this.$router.push('/table/ad-table')
     },
   }

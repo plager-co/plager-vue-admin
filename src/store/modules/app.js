@@ -12,7 +12,7 @@ const app = {
     ad: {},
     ad_influencer: {},
     influencer: {},
-    sponser: {},
+    sponsor: {},
     tester: {},
     influencer_ads: []
   },
@@ -27,7 +27,7 @@ const app = {
       state.influencer = data
     },
     SET_SPONSER: (state, data) => {
-      state.sponser = data
+      state.sponsor = data
     },
     SET_TESTER: (state, data) => {
       state.ad = data

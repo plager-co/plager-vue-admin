@@ -67,10 +67,10 @@ const tableRouter = {
       meta: { title: 'influencerTable' }
     },
     {
-      path: 'sponser-table',
-      component: () => import('@/views/table/sponserTable'),
-      name: 'sponserTable',
-      meta: { title: 'sponserTable' }
+      path: 'sponsor-table',
+      component: () => import('@/views/table/sponsorTable'),
+      name: 'sponsorTable',
+      meta: { title: 'sponsorTable' }
     },
     {
       path: 'tester-table',
