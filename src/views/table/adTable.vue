@@ -231,7 +231,7 @@ export default {
         min_created_at: undefined,
         max_created_at: undefined,
         created_at: undefined,
-        sort: '+id'
+        sort: '-id'
       },
       statusList:  [
         { label: '검토 대기중', key: 'registered' },
@@ -308,10 +308,16 @@ export default {
     this.user_type = this.$store.getters.user_type;
     this.listQuery.id = this.$store.getters.ad.id;
     this.listQuery.sponsor_id = this.$store.getters.ad.sponsor_id;
-    console.log("this.listQuery");
-    console.log(this.listQuery);
+    this.listQuery.status_text = this.$store.getters.ad.status_text;
+
+    console.log('this.$store.getters.ad_register');
+    console.log(this.$store.getters.ad_register);
     this.getList()
+
   },
+  // destroyed(){
+  //   console.log('destoryed')
+  // },
   methods: {
     getStatus(filterAds){
           var statusAds = '';
@@ -363,11 +369,16 @@ export default {
         this.yesterday_total = response.data.yesterday_count;
         this.today_total = response.data.today_count;
 
+        if (this.$store.getters.ad_register) {
+          this.$store.commit('SET_AD_REGISTER', false);
+          this.handleCreate()
+        }
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -444,7 +455,7 @@ export default {
       this.$router.push('/table/ad-influencer-table')
     },
     showSponsor(row) {
-      this.$store.commit('SET_SPONSER', { 'id': row.sponsor_id });
+      this.$store.commit('SET_SPONSOR', { 'id': row.sponsor_id });
       this.$router.push('/table/sponsor-table')
     },
     updateData() {

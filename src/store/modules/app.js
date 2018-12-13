@@ -14,11 +14,15 @@ const app = {
     influencer: {},
     sponsor: {},
     tester: {},
-    influencer_ads: []
+    influencer_ads: [],
+    ad_register: false,
   },
   mutations: {
     SET_AD: (state, data) => {
       state.ad = data
+    },
+    SET_AD_REGISTER: (state, data) => {
+      state.ad_register = data
     },
     SET_AD_INFLUENCER: (state, data) => {
       state.ad_influencer = data
@@ -26,7 +30,7 @@ const app = {
     SET_INFLUENCER: (state, data) => {
       state.influencer = data
     },
-    SET_SPONSER: (state, data) => {
+    SET_SPONSOR: (state, data) => {
       state.sponsor = data
     },
     SET_TESTER: (state, data) => {

@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+      <div class="card-panel" @click="showStartedAdList()">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
@@ -13,7 +13,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
+      <div class="card-panel" @click="showRegisteredAdList()">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
@@ -25,7 +25,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+      <div class="card-panel" @click="$router.push('/sponsor-table/sponsor-table')">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
@@ -37,7 +37,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel" @click="$router.push('/influencer-table/influencer-table')">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
         </div>
@@ -49,7 +49,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel" @click="$router.push('/tester-table/tester-table')">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
         </div>
@@ -60,6 +60,84 @@
         </div>
       </div>
     </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="$router.push('/sponsor-images/index')">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">총 등록 광고주</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="showStartedAdInfluencerList()">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">현재 Sim 진행 인플루언서</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="$router.push('/ad-influencer-table/ad-influencer-table');">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">총 등록 인플루언서</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="showCompletedAdList()">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">누적 SIM 진행 광고주</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="showComplatedAdInfluencerList()">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">누적 SIM 진행 인플루언서</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="showComplatedAdInfluencerList()">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">총 누적 파라미터</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="showFakeInfluencerList()">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">부정프로그램 사용 인플루언서</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="showReviewedAdInfluencerList()">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">결제 예정액 및 광고주 리스트</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="registerAd()">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">신규 광고 입력</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="showRevenue()">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">년, 월, 주 매출액</div>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="$router.push('/tester-table/tester-table')">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">월, 주별 인플루언서 테스트</div>
+        </div>
+      </div>
+    </el-col>
+
   </el-row>
 </template>
 
@@ -118,6 +196,42 @@ export default {
         this.today_tester = response.data.today_count;
       });
     },
+    showStartedAdList() {
+      this.$store.commit('SET_AD', { 'status_text': 'started'});
+      this.$router.push('/table/ad-table');
+    },
+    showRegisteredAdList() {
+      this.$store.commit('SET_AD', { 'status_text': 'registered'});
+      this.$router.push('/table/ad-table');
+    },
+    showStartedAdInfluencerList() {
+      this.$store.commit('SET_AD_INFLUENCER', { 'status_text': 'started'});
+      this.$router.push('/table/ad-influencer-table');
+    },
+    showCompletedAdList() {
+      this.$store.commit('SET_AD', { 'status_text': 'completed'});
+      this.$router.push('/table/ad-influencer-table');
+    },
+    showComplatedAdInfluencerList() {
+      this.$store.commit('SET_AD_INFLUENCER', { 'status_text': 'completed'});
+      this.$router.push('/table/ad-influencer-table');
+    },
+    showFakeInfluencerList() {
+      this.$store.commit('SET_INFLUENCER', { 'is_fake_instagram': 1});
+      this.$router.push('/table/influencer-table');
+    },
+    showReviewedAdInfluencerList() {
+      this.$store.commit('SET_AD_INFLUENCER', { 'status_text': 'reviewed'});
+      this.$router.push('/table/ad-influencer-table');
+    },
+    registerAd() {
+      this.$store.commit('SET_AD_REGISTER', true);
+      this.$router.push('/table/ad-table');
+    },
+    showRevenue() {
+      this.$router.push('/ad-influencer-table/ad-influencer-table');
+    },
+
   }
 }
 </script>
@@ -183,6 +297,20 @@ export default {
       font-weight: bold;
       margin: 26px;
       margin-left: 0px;
+      .card-panel-text {
+        line-height: 18px;
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+      .card-panel-num {
+        font-size: 20px;
+      }
+    }
+    .card-panel-description-center {
+      text-align: center;
+      font-weight: bold;
+      margin: 40px 0px;
       .card-panel-text {
         line-height: 18px;
         color: rgba(0, 0, 0, 0.45);

@@ -236,7 +236,7 @@ export default {
         document_link: undefined,
         facebook: undefined,
         social: undefined,
-        sort: '+id',
+        sort: '-id',
         is_removed: undefined,
         is_delete_requested: undefined,
       },

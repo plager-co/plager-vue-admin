@@ -366,7 +366,7 @@ export default {
         total_paid: undefined,
         is_removed: undefined,
         is_delete_requested: undefined,
-        sort: '+id'
+        sort: '-id'
       },
       yesNoList:[
         { label: '예', key: '1' },
@@ -473,6 +473,7 @@ export default {
     this.avg_influencer_effect_rate = this.$store.getters.avg_influencer_effect_rate;
     this.listQuery.id = this.$store.getters.influencer.id;
     this.listQuery.category = this.$store.getters.influencer.category;
+    this.listQuery.is_fake_instagram = this.$store.getters.influencer.is_fake_instagram;
     this.getList()
     this.user_type = this.$store.getters.user_type;
     if (this.$store.getters.influencer.sort){

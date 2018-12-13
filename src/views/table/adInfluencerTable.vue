@@ -272,7 +272,7 @@ export default {
         target_movie_count: undefined,
         target_play_count: undefined,
         target_inbound_count: undefined,
-        sort: '+id'
+        sort: '-id'
       },
       statusList:  [
         { label: '광고주 추천', key: 'recommended' },
@@ -354,6 +354,7 @@ export default {
     this.listQuery.id = this.$store.getters.ad_influencer.id;
     this.listQuery.ad_id = this.$store.getters.ad_influencer.ad_id;
     this.listQuery.influencer_id = this.$store.getters.ad_influencer.influencer_id;
+    this.listQuery.status_text = this.$store.getters.ad_influencer.status_text;
     this.getList()
 
   },
