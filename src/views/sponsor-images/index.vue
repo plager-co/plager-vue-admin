@@ -4,6 +4,14 @@
       <a href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/icon.html" target="_blank">Add and use
       </a>
     </p>
+
+      <vue-ads-pagination
+          :page="0"
+          :itemsPerPage="16"
+          :maxVisiblePages="6"
+          :totalItems="count"
+          @page-change="pageChange"
+      />
     <div class="icons-wrapper">
       <div v-for="item of list" v-bind="item">
         <el-tooltip placement="top">
@@ -22,14 +30,18 @@
 
 <script>
 import { fetchList } from '@/api/sponsor'
-
+import VueAdsPagination from 'vue-ads-pagination';
 export default {
   name: 'Icons',
+   components: {
+        VueAdsPagination,
+    },
   data() {
     return {
+      count: 7,
       listQuery: {
         page: 1,
-        limit: 1000,
+        limit: 16,
         id: undefined,
         sponsor_id: undefined,
         email: undefined,
@@ -61,15 +73,22 @@ export default {
   methods: {
     getList() {
       fetchList(this.listQuery).then(response => {
-        this.list = response.data.result
-        console.log("this.list");
-        console.log(this.list);
+        this.list = response.data.result;
+        this.count = response.data.count;
 
       })
     },
     showAd(row) {
       this.$store.commit('SET_AD', { 'sponsor_id': row.id});
       this.$router.push('/table/ad-table')
+    },
+    pageChange (page, range) {
+        console.log(page, range);
+        this.listQuery = {
+                'page': page + 1,
+                'limit': 16,
+            };
+        this.getList();
     },
   }
 }
@@ -78,7 +97,6 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .icons-container {
   margin: 10px 20px 0;
-  overflow: hidden;
   .icons-wrapper {
     margin: 0 auto;
   }
