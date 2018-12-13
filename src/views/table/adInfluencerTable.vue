@@ -112,6 +112,16 @@
           <span>{{ scope.row.target_movie_count }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="댓글 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.target_comment_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="재생 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.target_play_count }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
