@@ -179,7 +179,7 @@ export const asyncRouterMap = [
       name: 'sponsorTable',
       meta: { title: '스폰서' },
       beforeEnter(to, from, next) {
-        store.commit('SET_SPONSER', { } );
+        store.commit('SET_SPONSOR', { } );
         next();
       }
     }

@@ -261,7 +261,7 @@ export default {
         total_movie_count: undefined,
         total_play_count: undefined,
         influencer_cost: undefined,
-        sort: '+id'
+        sort: '-id'
       },
       targetCategoryList:[
         { label: '뷰티', key: '뷰티' },

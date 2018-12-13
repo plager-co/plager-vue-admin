@@ -112,6 +112,16 @@
           <span>{{ scope.row.target_movie_count }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="댓글 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.target_comment_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="재생 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.target_play_count }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -272,7 +282,7 @@ export default {
         target_movie_count: undefined,
         target_play_count: undefined,
         target_inbound_count: undefined,
-        sort: '+id'
+        sort: '-id'
       },
       statusList:  [
         { label: '광고주 추천', key: 'recommended' },
@@ -354,6 +364,7 @@ export default {
     this.listQuery.id = this.$store.getters.ad_influencer.id;
     this.listQuery.ad_id = this.$store.getters.ad_influencer.ad_id;
     this.listQuery.influencer_id = this.$store.getters.ad_influencer.influencer_id;
+    this.listQuery.status_text = this.$store.getters.ad_influencer.status_text;
     this.getList()
 
   },

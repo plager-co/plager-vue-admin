@@ -17,6 +17,7 @@ const getters = {
   addRouters: state => state.permission.addRouters,
   errorLogs: state => state.errorLog.logs,
   ad: state => state.app.ad,
+  ad_register: state => state.app.ad_register,
   ad_influencer: state => state.app.ad_influencer,
   influencer: state => state.app.influencer,
   sponsor: state => state.app.sponsor,
