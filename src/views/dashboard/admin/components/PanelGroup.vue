@@ -137,6 +137,13 @@
         </div>
       </div>
     </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="$router.push('/ad-influencer-calendar-table/ad-influencer-calendar-table')">
+        <div class="card-panel-description-center">
+          <div class="card-panel-text">광고 스케줄 표</div>
+        </div>
+      </div>
+    </el-col>
 
   </el-row>
 </template>
