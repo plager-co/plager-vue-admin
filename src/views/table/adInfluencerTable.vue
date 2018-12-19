@@ -84,6 +84,7 @@
           <br v-if="scope.row.status_text === 'paid'"><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
           <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
           <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
+          <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="exportPerformance(scope.row)">성과 다운로드</el-button>
 
         </template>
       </el-table-column>
@@ -230,6 +231,7 @@ import { fetchList, fetchPv, createAdInfluencer, updateAdInfluencer } from '@/ap
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import jsPDF from 'jspdf'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -700,7 +702,15 @@ export default {
       })
     },
 
+    exportPerformance(row) {
+      var doc = new jsPDF();
+      doc.text(20, 20, 'Hello world!');
+      doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
+      doc.addPage();
+      doc.text(20, 20, 'Do you like that?');
 
+      doc.save('Test.pdf');
+    },
 
     updateData() {
       var token = this.$store.getters.token;
