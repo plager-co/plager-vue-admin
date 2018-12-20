@@ -1,5 +1,5 @@
 module.exports = {
   NODE_ENV: '"production"',
   ENV_CONFIG: '"prod"',
-  BASE_API: '"http://api.plager.co"'
+  BASE_API: '"http://52.79.143.32:8080"'
 }
