@@ -165,7 +165,7 @@ import { fetchList, fetchPv, createAd, updateAd } from '@/api/ad'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-
+import moment from 'moment'
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
   { key: 'US', display_name: 'USA' },
@@ -309,9 +309,6 @@ export default {
     this.listQuery.id = this.$store.getters.ad.id;
     this.listQuery.sponsor_id = this.$store.getters.ad.sponsor_id;
     this.listQuery.status_text = this.$store.getters.ad.status_text;
-
-    console.log('this.$store.getters.ad_register');
-    console.log(this.$store.getters.ad_register);
     this.getList()
 
   },

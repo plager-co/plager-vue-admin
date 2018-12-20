@@ -140,6 +140,27 @@ export const asyncRouterMap = [
       }
     }
   ]
+},{
+  path: '/ad-influencer-calendar-table',
+  component: Layout,
+  redirect: '/table/ad-influencer-calendar-table',
+  name: 'AdInfluencerCalendarTable',
+  meta: {
+    title: 'AdInfluencerCalendarTable',
+    icon: 'table'
+  },
+  children: [
+    {
+      path: 'ad-influencer-calendar-table',
+      component: () => import('@/views/table/adInfluencerCalendarTable'),
+      name: 'adInfluencerCalendarTable',
+      meta: { title: '광고 스케쥴표' },
+      beforeEnter(to, from, next) {
+        store.commit('SET_AD_INFLUENCER', { } );
+        next();
+      }
+    }
+  ]
 },
   {
   path: '/influencer-table',

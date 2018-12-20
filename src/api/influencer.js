@@ -12,6 +12,18 @@ export function fetchList(query) {
   })
 }
 
+export function fetchTotalList(query) {
+
+  query.user_type = 'influencer';
+  query.is_removed = 0;
+
+  return request({
+    url: '/users/filters/3/',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchInfluencer(id) {
   return request({
     url: '/users/' + id,

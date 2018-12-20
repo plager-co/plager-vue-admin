@@ -12,6 +12,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import router from './router'
 import store from './store'
+import FullCalendar from "vue-full-calendar";
 
 import i18n from './lang' // Internationalization
 import './icons' // icon
@@ -19,6 +20,10 @@ import './errorLog' // error log
 import './permission' // permission control
 
 import * as filters from './filters' // global filters
+
+import "fullcalendar/dist/fullcalendar.min.css";
+
+Vue.use(FullCalendar);
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <full-calendar :config="config" :events="events"  @event-selected="eventSelected"/>
     <div class="filter-container">
       <el-input v-model="listQuery.id" placeholder="ID" style="width: 50px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.ad_id" placeholder="광고 ID" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter"/>
@@ -13,10 +14,21 @@
       <el-select v-model="listQuery.status_text" placeholder="진행 상태" clearable style="width: 200px" class="filter-item">
         <el-option v-for="item in statusList" :key="item.key" :label="item.label" :value="item.key"/>
       </el-select>
+      <br>
       등록 날짜:
       <el-input v-model="listQuery.min_created_at" placeholder="ex)180510" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       ~
       <el-input v-model="listQuery.max_created_at" placeholder="ex)181212" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <br>
+      광고 시작 날짜:
+      <el-input v-model="listQuery.min_ad_start_at" placeholder="ex)180510" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      ~
+      <el-input v-model="listQuery.max_ad_start_at" placeholder="ex)181212" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <br>
+      광고 종료 날짜:
+      <el-input v-model="listQuery.min_ad_end_at" placeholder="ex)180510" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      ~
+      <el-input v-model="listQuery.max_ad_end_at" placeholder="ex)181212" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button v-if="user_type === 'admin'" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
@@ -27,6 +39,7 @@
     </div>
 
     <el-table
+      id="ad-influencer-table-data"
       v-loading="listLoading"
       :key="tableKey"
       :data="list"
@@ -84,7 +97,6 @@
           <br v-if="scope.row.status_text === 'paid'"><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
           <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
           <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
-          <br v-if="scope.row.status_text === 'started'"><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="exportPerformance(scope.row)">성과 다운로드</el-button>
 
         </template>
       </el-table-column>
@@ -231,7 +243,6 @@ import { fetchList, fetchPv, createAdInfluencer, updateAdInfluencer } from '@/ap
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import jsPDF from 'jspdf'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -264,6 +275,13 @@ export default {
   },
   data() {
     return {
+      	events: [],
+			config: {
+        defaultView: 'month',
+				eventRender: function(event, element) {
+        	console.log(event)
+    		}
+      },
       tableKey: 0,
       user_type: null,
       list: null,
@@ -300,7 +318,11 @@ export default {
         paid_month: undefined,
         ad_month: undefined,
         ad_start_at: undefined,
+        min_ad_start_at: undefined,
+        max_ad_start_at: undefined,
         ad_end_at: undefined,
+        min_ad_end_at: undefined,
+        max_ad_end_at: undefined,
         duplicate_follower_count: undefined,
         target_impression_count: undefined,
         target_reach_count: undefined,
@@ -398,6 +420,7 @@ export default {
     this.listQuery.influencer_id = this.$store.getters.ad_influencer.influencer_id;
     this.listQuery.status_text = this.$store.getters.ad_influencer.status_text;
     this.getList()
+    this.getAllAds()
 
   },
   methods: {
@@ -445,6 +468,41 @@ export default {
       },
     numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    getAllAds() {
+      var allAds = null;
+      var events = []
+      var today = new Date();
+      for (var i = 0; i <= 180; i++) {
+          var nextDate = new Date();
+          nextDate.setDate(today.getDate()+ i);
+          events.push({
+            title: 0,
+            start: nextDate.toISOString().split('T')[0],
+            end: nextDate.toISOString().split('T')[0],
+            dateObject: nextDate,
+          })
+      }
+
+      fetchList({status: 3}).then(response => {
+        allAds = response.data.result;
+
+        allAds.forEach(function(val){
+          var ad_start_at_split = val.ad_start_at.split(' ')[0].split('-');
+          var ad_start_at = new Date(ad_start_at_split[0],ad_start_at_split[1] - 1,ad_start_at_split[2]);
+          var ad_end_at_split = val.ad_end_at.split(' ')[0].split('-');
+          var ad_end_at = new Date(ad_end_at_split[0],ad_end_at_split[1] - 1,ad_end_at_split[2]);
+          events.forEach(function(event){
+
+            if(event.dateObject > ad_start_at && event.dateObject < ad_end_at){
+              event.title = event.title + 1;
+            }
+
+          });
+        });
+
+        this.events = events;
+      })
     },
     getList() {
       this.listLoading = true
@@ -702,15 +760,7 @@ export default {
       })
     },
 
-    exportPerformance(row) {
-      var doc = new jsPDF();
-      doc.text(20, 20, 'Hello world!');
-      doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
-      doc.addPage();
-      doc.text(20, 20, 'Do you like that?');
 
-      doc.save('Test.pdf');
-    },
 
     updateData() {
       var token = this.$store.getters.token;
@@ -776,7 +826,28 @@ export default {
           return v[j]
         }
       }))
+    },
+    eventSelected(event, jsEvent, view){
+      console.log(event.start);
+      var start = event.start._i.split('-');
+        console.log(start[0].substring(2,4));
+      this.listQuery.max_ad_start_at = start[0].substring(2,4) + start[1] + start[2];
+      this.listQuery.min_ad_end_at = start[0].substring(2,4) + start[1] + start[2];
+      this.listQuery.status = 3;
+      this.getList();
+      window.location.href="#ad-influencer-table-data";
     }
   }
 }
 </script>
+<style>
+  .fc-event,
+  .fc-event :hover{
+
+      text-align: center;
+    font-size: 30px;
+    color: green;
+    background-color: transparent;
+  }
+</style>
+

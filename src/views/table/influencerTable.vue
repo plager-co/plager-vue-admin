@@ -119,6 +119,57 @@
       </el-table-column>
     </el-table>
 
+    <el-table
+      v-loading="listLoading"
+      :key="tableKey"
+      :data="total_list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      @sort-change="sortChange">
+      <el-table-column label="Total" prop="id" sortable="custom" align="center" width="65">
+        <template slot-scope="scope">
+          <span class="link-type">Total</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="총 Like 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_like_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="총 Post 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_post_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="총 동영상 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_movie_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="총 댓글 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_comment_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="총 팔로워 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_follower_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="총 조회 수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_play_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="수령 광고비" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.total_paid }}</span>
+        </template>
+      </el-table-column>
+    </el-table>
+
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog v-if="user_type === 'admin'" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
@@ -293,7 +344,7 @@
 
 <script>
 import { fetchList as fetchAdInfluencerList } from '@/api/adInfluencer'
-import { fetchList, fetchPv, createInfluencer, updateInfluencer } from '@/api/influencer'
+import { fetchList, fetchPv, createInfluencer, updateInfluencer, fetchTotalList } from '@/api/influencer'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -332,6 +383,7 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      total_list: null,
       user_type: null,
       yesterday_total: null,
       today_total: null,
@@ -583,18 +635,31 @@ this.listQuery.id = this.$store.getters.influencer.id;
       fetchList(this.listQuery).then(response => {
         console.log("response");
         console.log(response);
-        this.list = response.data.result
+        this.list = response.data.result;
         console.log("this.list");
         console.log(this.list);
         this.total = response.data.count;
         this.yesterday_total = response.data.yesterday_count;
         this.today_total = response.data.today_count;
-
+      this.getTotalList();
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+    },
+
+    getTotalList() {
+      this.listLoading = true;
+      fetchTotalList(this.listQuery).then(response => {
+        this.total_list = response.data.result;
+      console.log('total_list');
+      console.log(total_list);
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      });
     },
     handleFilter() {
       this.listQuery.page = 1
