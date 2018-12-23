@@ -575,15 +575,27 @@ export default {
           })
       })
     },
+    makeid() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
+    },
     paidAd(row) {
+      var hashtag = this.makeid() + Date.now();
       var token = this.$store.getters.token;
       row.status = 2;
       row.status_text = 'paid';
+      row.hashtag = hashtag;
 
       const adInfluencerData = {
         'id': row.id,
         'status': 2,
         'status_text': 'paid',
+        'hashtag': hashtag,
         'paid_at': new Date().toISOString().slice(0,10)
       };
 
