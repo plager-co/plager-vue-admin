@@ -67,3 +67,14 @@ export function avgInfluencerEffectRate() {
     method: 'get',
   })
 }
+
+export function deleteInfluencer(data, token) {
+
+
+  return request({
+    url: '/admin/users/',
+    method: 'delete',
+    params: { token },
+    data
+  })
+}
