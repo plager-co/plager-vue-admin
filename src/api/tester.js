@@ -45,3 +45,14 @@ export function updateTester(data, token) {
     data
   })
 }
+
+export function deleteTester(data, token) {
+
+
+  return request({
+    url: '/admin/testers/',
+    method: 'delete',
+    params: { token },
+    data
+  })
+}

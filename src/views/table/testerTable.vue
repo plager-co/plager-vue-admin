@@ -53,6 +53,7 @@
       <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <br><el-button type="warning" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
 
         </template>
       </el-table-column>
@@ -192,7 +193,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createTester, updateTester } from '@/api/tester'
+import { fetchList, fetchPv, createTester, updateTester, deleteTester } from '@/api/tester'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -275,7 +276,7 @@ export default {
         { label: '기타', key: '기타' },
       ],
       statusList:  [
-        { label: '광고주 추천', key: 'recommended' },
+        { label: '광고주 선택', key: 'recommended' },
         { label: '검토 완료', key: 'reviewed' },
         { label: '플래거 추천', key: 'chosen' },
         { label: '광고 준비중', key: 'paid' },
@@ -362,7 +363,7 @@ export default {
           } else if (filterAds === 'paused'){
             statusAds = '광고 일시중지';
           } else if (filterAds === 'recommended'){
-            statusAds = '광고주 추천';
+            statusAds = '광고주 선택';
           } else if (filterAds === 'chosen'){
             statusAds = '플래거 추천';
           }
@@ -539,14 +540,29 @@ export default {
       })
     },
     handleDelete(row) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
-      })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
+    if (confirm("삭제 하시겠습니까?")){
+        var token = this.$store.getters.token;
+        const tempData = Object.assign({}, row);
+        deleteTester(tempData, token).then(() => {
+              for (const v of this.list) {
+                if (v.id === this.temp.id) {
+                  const index = this.list.indexOf(v)
+                  this.list.splice(index, 1, this.temp)
+                  break
+                }
+              }
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '성공',
+                message: '삭제 완료',
+                type: 'success',
+                duration: 2000
+              })
+            })
+
+        const index = this.list.indexOf(row)
+        this.list.splice(index, 1)
+      }
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

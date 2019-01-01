@@ -276,7 +276,7 @@ export default {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
-              title: '成功',
+              title: '성공',
               message: '创建成功',
               type: 'success',
               duration: 2000
@@ -309,7 +309,7 @@ export default {
             }
             this.dialogFormVisible = false
             this.$notify({
-              title: '成功',
+              title: '성공',
               message: '更新成功',
               type: 'success',
               duration: 2000
