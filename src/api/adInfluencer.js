@@ -50,3 +50,14 @@ export function updateAdInfluencer(data, token) {
     data
   })
 }
+
+export function deleteAdInfluencer(data, token) {
+
+
+  return request({
+    url: '/admin/ad_influencers/',
+    method: 'delete',
+    params: { token },
+    data
+  })
+}

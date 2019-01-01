@@ -48,3 +48,14 @@ export function updateSponsor(data, token) {
     data
   })
 }
+
+export function deleteSponsor(data, token) {
+
+
+  return request({
+    url: '/admin/users/',
+    method: 'delete',
+    params: { token },
+    data
+  })
+}

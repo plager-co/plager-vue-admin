@@ -44,3 +44,14 @@ export function updateAd(data, token) {
     data
   })
 }
+
+export function deleteAd(data, token) {
+
+
+  return request({
+    url: '/admin/ads/',
+    method: 'delete',
+    params: { token },
+    data
+  })
+}
