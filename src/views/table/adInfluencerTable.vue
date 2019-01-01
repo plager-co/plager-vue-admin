@@ -585,7 +585,7 @@ export default {
       return text;
     },
     paidAd(row) {
-      var hashtag = this.makeid() + Date.now();
+      var hashtag = Date.now();
       var token = this.$store.getters.token;
       row.status = 2;
       row.status_text = 'paid';
