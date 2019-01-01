@@ -436,7 +436,7 @@ export default {
         { label: '기타', key: '기타' },
       ],
       statusList:  [
-        { label: '광고주 추천', key: 'recommended' },
+        { label: '광고주 선택', key: 'recommended' },
         { label: '검토 완료', key: 'reviewed' },
         { label: '플래거 추천', key: 'chosen' },
         { label: '광고 준비중', key: 'paid' },
@@ -605,7 +605,7 @@ this.listQuery.id = this.$store.getters.influencer.id;
           } else if (filterAds === 'paused'){
             statusAds = '광고 일시중지';
           } else if (filterAds === 'recommended'){
-            statusAds = '광고주 추천';
+            statusAds = '광고주 선택';
           } else if (filterAds === 'chosen'){
             statusAds = '플래거 추천';
           }
