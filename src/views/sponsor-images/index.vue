@@ -7,7 +7,7 @@
 
       <vue-ads-pagination
           :page="0"
-          :itemsPerPage="16"
+          :itemsPerPage="40"
           :maxVisiblePages="6"
           :totalItems="count"
           @page-change="pageChange"
@@ -19,7 +19,7 @@
             {{ item.instagram }}
           </div>
           <div class="icon-item">
-             <img :src="item.picture_link" style="width: 100px; height: 100px;" @click="showAd(item)">
+             <img :src="item.picture_link" style="width: 60px; height: 60px;" @click="showAd(item)">
             <span>{{ item.instagram }}</span>
           </div>
         </el-tooltip>
@@ -41,7 +41,7 @@ export default {
       count: 7,
       listQuery: {
         page: 1,
-        limit: 16,
+        limit: 40,
         id: undefined,
         sponsor_id: undefined,
         email: undefined,
@@ -62,7 +62,7 @@ export default {
         min_created_at: undefined,
         max_created_at: undefined,
         created_at: undefined,
-        sort: '+id'
+        sort: '+instagram'
       },
       list: null,
     }
@@ -86,7 +86,8 @@ export default {
         console.log(page, range);
         this.listQuery = {
                 'page': page + 1,
-                'limit': 16,
+                'limit': 40,
+          'sort': '+instagram'
             };
         this.getList();
     },
@@ -104,7 +105,7 @@ export default {
     margin: 20px;
     height: 110px;
     text-align: center;
-    width: 110px;
+    width: 60px;
     float: left;
     font-size: 30px;
     color: #24292e;
@@ -112,7 +113,7 @@ export default {
   }
   span {
     display: block;
-    font-size: 24px;
+    font-size: 15px;
     margin-top: 10px;
   }
   .disabled{
