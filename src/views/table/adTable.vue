@@ -70,7 +70,8 @@
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <br><el-button type="warning" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
-          <br><el-button type="warning" size="normal" @click="showAdInfluencer(scope.row)">관련 인플루언서</el-button>
+          <br><el-button type="primary" size="normal" @click="showAdInfluencer(scope.row)">관련 인플루언서</el-button>
+          <br><el-button type="warning" size="normal" @click="showRecommendAdInfluencer(scope.row)">추천 인플루언서</el-button>
           <br v-if="scope.row.status_text === 'registered'" ><el-button v-if="scope.row.status_text === 'registered'" type="error" size="mini" @click="reviewAd(scope.row)">검토 완료</el-button>
           <br v-if="scope.row.status_text === 'reviewed'" ><el-button v-if="scope.row.status_text === 'reviewed'" type="error" size="mini" @click="paidAd(scope.row)">결재 확인</el-button>
           <br v-if="scope.row.status_text === 'paid'" ><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
@@ -450,6 +451,10 @@ export default {
     },
     showAdInfluencer(row) {
       this.$store.commit('SET_AD_INFLUENCER', { 'ad_id': row.id });
+      this.$router.push('/table/ad-influencer-table')
+    },
+    showRecommendAdInfluencer(row) {
+      this.$store.commit('SET_AD_INFLUENCER', { 'ad_id': row.id, 'status': 0 });
       this.$router.push('/table/ad-influencer-table')
     },
     showSponsor(row) {
