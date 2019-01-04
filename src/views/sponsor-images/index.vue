@@ -62,7 +62,7 @@ export default {
         min_created_at: undefined,
         max_created_at: undefined,
         created_at: undefined,
-        sort: '+id'
+        sort: '+instagram'
       },
       list: null,
     }
@@ -87,6 +87,7 @@ export default {
         this.listQuery = {
                 'page': page + 1,
                 'limit': 40,
+          'sort': '+instagram'
             };
         this.getList();
     },
