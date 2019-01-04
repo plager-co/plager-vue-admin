@@ -114,6 +114,11 @@
           <span>{{ scope.row.ad_end_at }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="광고 횟수" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.ad_count }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Like 수" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.target_like_count }}</span>
@@ -164,6 +169,9 @@
         </el-form-item>
         <el-form-item label="가격">
           <el-input v-model="temp.price"/>
+        </el-form-item>
+        <el-form-item label="광고 횟수">
+          <el-input v-model="temp.ad_count"/>
         </el-form-item>
         <el-form-item label="지급 개월">
           <el-input v-model="temp.paid_month"/>
@@ -302,6 +310,7 @@ export default {
         ad_month: undefined,
         ad_start_at: undefined,
         ad_end_at: undefined,
+        ad_count: undefined,
         duplicate_follower_count: undefined,
         target_impression_count: undefined,
         target_reach_count: undefined,
@@ -365,6 +374,7 @@ export default {
         ad_end_at: undefined,
         ad_month: undefined,
         ad_start_at: undefined,
+        ad_count: undefined,
         duplicate_follower_count: undefined,
         target_impression_count: undefined,
         target_reach_count: undefined,
@@ -785,8 +795,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', 'ad_id', 'influencer_id', 'hashtag', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'ad_start_at', 'ad_end_at', 'ad_month', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
-        const filterVal = ['id', 'ad_id', 'influencer_id', 'hashtag', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'ad_start_at', 'ad_end_at', 'ad_month', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
+        const tHeader = ['id', 'ad_id', 'influencer_id', 'hashtag', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'ad_start_at', 'ad_end_at', 'ad_month', 'ad_count', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
+        const filterVal = ['id', 'ad_id', 'influencer_id', 'hashtag', 'email', 'instagram', 'status_text', 'period', 'created_at', 'updated_at', 'started_at', 'paused_at', 'completed_at', 'price', 'payment_method', 'paid_month', 'ad_start_at', 'ad_end_at', 'ad_month', 'ad_count', 'duplicate_follower_count', 'target_impression_count', 'target_reach_count', 'target_post_count', 'target_like_count', 'target_comment_count', 'target_save_count', 'target_movie_count', 'target_play_count', 'target_inbound_count']
         const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,
