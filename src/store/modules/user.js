@@ -87,6 +87,7 @@ const user = {
           }
 
           commit('SET_NAME', data.name)
+          commit('SET_USER_TYPE', data.user_type)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
           resolve(response)
