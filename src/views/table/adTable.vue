@@ -60,11 +60,6 @@
           <span class="link-type" @click="showSponsor(scope.row)">{{ scope.row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="진행 상태" class-name="status-col" width="150">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status_text | statusFilter">{{ getStatus(scope.row.status_text) }}</el-tag>
-        </template>
-      </el-table-column>
 
       <el-table-column v-if="user_type === 'admin'" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -72,11 +67,6 @@
           <br><el-button type="warning" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
           <br><el-button type="primary" size="normal" @click="showAdInfluencer(scope.row)">관련 인플루언서</el-button>
           <br><el-button type="warning" size="normal" @click="showRecommendAdInfluencer(scope.row)">추천 인플루언서</el-button>
-          <br v-if="scope.row.status_text === 'registered'" ><el-button v-if="scope.row.status_text === 'registered'" type="error" size="mini" @click="reviewAd(scope.row)">검토 완료</el-button>
-          <br v-if="scope.row.status_text === 'reviewed'" ><el-button v-if="scope.row.status_text === 'reviewed'" type="error" size="mini" @click="paidAd(scope.row)">결재 확인</el-button>
-          <br v-if="scope.row.status_text === 'paid'" ><el-button v-if="scope.row.status_text === 'paid'" type="error" size="mini" @click="startAd(scope.row)">광고 시작</el-button>
-          <br v-if="scope.row.status_text === 'started'" ><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="stopAd(scope.row)">광고 중지</el-button>
-          <br v-if="scope.row.status_text === 'started'" ><el-button v-if="scope.row.status_text === 'started'" type="error" size="mini" @click="finishAd(scope.row)">광고 완료</el-button>
 
         </template>
       </el-table-column>
@@ -125,11 +115,6 @@
         <el-form-item label="성별">
           <el-select v-model="temp.target_sex" class="filter-item" placeholder="Please select">
             <el-option v-for="item in targetSexList" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="상태">
-          <el-select v-model="temp.status_text" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusList" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
         <el-form-item label="필요팔로워수">
