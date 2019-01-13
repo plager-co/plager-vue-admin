@@ -857,6 +857,9 @@ export default {
 }
 </script>
 <style>
+  .fc-event {
+    border: 0px;
+  }
   .fc-event,
   .fc-event :hover{
 
