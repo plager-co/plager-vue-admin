@@ -75,7 +75,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="$router.push('/ad-influencer-table/ad-influencer-table');">
+      <div class="card-panel" @click="$router.push('/influencer-table/influencer-table');">
         <div class="card-panel-description-center">
           <div class="card-panel-text">총 등록 인플루언서</div>
         </div>
