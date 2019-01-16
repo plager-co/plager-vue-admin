@@ -111,6 +111,12 @@ export default {
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)
+
+    this.$message({
+      message: '다시 로그인 시도해주세요.',
+      type: 'error',
+      duration: 5 * 1000
+    });
   },
   destroyed() {
     // window.removeEventListener('hashchange', this.afterQRScan)
