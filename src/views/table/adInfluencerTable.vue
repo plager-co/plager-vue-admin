@@ -439,6 +439,8 @@ export default {
           var statusAds = '';
           if (filterAds === 'recommended'){
           statusAds = '0';
+          } else if (filterAds === 'reviewed'){
+              statusAds = '0';
           } else if (filterAds === 'chosen'){
               statusAds = '1';
           } else if (filterAds === 'paid'){
